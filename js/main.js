@@ -5,19 +5,28 @@ function randomInteger(min, max) {
 
 var types = ['palace', 'flat', 'house', 'bungalo'];
 var times = ['12:00', '13:00', '14:00'];
-var features = ['wifi', 'dishwasher', "parking", 'washer', 'elevator', 'conditioner'];
-var photos = ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"];
 
-var random = randomInteger(0, 5);
-console.log(random);
-var featuresArray = [];
-for (var i = 0; i <= random; i++) {
-
-  featuresArray.push(features[i]);
-
+var getFeatures = function () {
+  var features = ['wifi', 'dishwasher', "parking", 'washer', 'elevator', 'conditioner'];
+  var random = randomInteger(0, features.length - 1);
+  var featuresPart = [];
+  for (var i = 0; i <= random; i++) {
+    featuresPart.push(features[i]);
+  }
+  return featuresPart;
 }
 
-console.log(featuresArray);
+var getPhotos = function () {
+  var photos = ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"];
+  var random = randomInteger(0, photos.length - 1);
+  var photosPart = [];
+  for (var i = 0; i <= random; i++) {
+    photosPart.push(photos[i]);
+  }
+  return photosPart;
+}
+
+
 
 var createArray = function () {
   var mainArray = [];
@@ -36,12 +45,12 @@ var createArray = function () {
         guests: 0,
         checkin: times[randomInteger(0, times.length - 1)],
         checkout: times[randomInteger(0, times.length - 1)],
-        features: features[randomInteger(0, features.length - 1)],
+        features: getFeatures(),
         description: '',
-        photos: []
+        photos: getPhotos()
       },
       location: {
-        x: randomInteger(0, window.width),
+        x: randomInteger(0, 500),
         y: randomInteger(130, 630),
       }
     }
@@ -50,16 +59,22 @@ var createArray = function () {
   }
   return mainArray;
 }
-
-console.log(createArray());
-
+var pins = createArray();
+console.log(pins);
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
-/*
-var card = document.querySelector('#pin').content.querySelector('.map__pin');
-card.setAttribute('style', 'left: location.x + X', 'top: location.y + Y');
-var avatar = card.querySelector('img');
-avatar.src = '' + author.avatar;
-avatar.alt = '' + offer.title; */
 
+var mapPins = map.querySelector('.map__pins');
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
+for (var i = 0; i < pins.length; i++) {
+  var pin = pinTemplate.cloneNode(true);
+  pin.style.left = pins[i].location.x;
+  pin.style.top = pins[i].location.y;
+  console.log(pin);
+  //pin.querySelector('img').src = pins[i].author.avatar;
+  //pin.querySelector('img').alt = pins[i].offer.title;
+
+  mapPins.appendChild(pin);
+}
