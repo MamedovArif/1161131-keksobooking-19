@@ -1,32 +1,33 @@
+'use strict';
+
 function randomInteger(min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
 }
-var titles = ['домик', 'ночлег', 'конура', 'нора', 'гнездо', 'облако', 'токио', 'жилье']
+
+var titles = ['домик', 'ночлег', 'конура', 'нора', 'гнездо', 'облако', 'токио', 'жилье'];
 var types = ['palace', 'flat', 'house', 'bungalo'];
 var times = ['12:00', '13:00', '14:00'];
 
 var getFeatures = function () {
-  var features = ['wifi', 'dishwasher', "parking", 'washer', 'elevator', 'conditioner'];
+  var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var random = randomInteger(0, features.length - 1);
   var featuresPart = [];
   for (var i = 0; i <= random; i++) {
     featuresPart.push(features[i]);
   }
   return featuresPart;
-}
+};
 
 var getPhotos = function () {
-  var photos = ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"];
+  var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var random = randomInteger(0, photos.length - 1);
   var photosPart = [];
   for (var i = 0; i <= random; i++) {
     photosPart.push(photos[i]);
   }
   return photosPart;
-}
-
-
+};
 
 var createArray = function () {
   var mainArray = [];
@@ -53,14 +54,14 @@ var createArray = function () {
         x: randomInteger(0, 500),
         y: randomInteger(130, 630),
       }
-    }
+    };
 
     mainArray.push(mainObject);
   }
   return mainArray;
-}
+};
+
 var pins = createArray();
-console.log(pins);
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
@@ -74,7 +75,5 @@ for (var i = 0; i < pins.length; i++) {
   pin.style.top = (pins[i].location.y - 70) + 'px';
   pin.querySelector('img').src = pins[i].author.avatar;
   pin.querySelector('img').alt = pins[i].offer.title;
-  console.log(pin);
-
   mapPins.appendChild(pin);
 }
