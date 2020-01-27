@@ -2,7 +2,7 @@ function randomInteger(min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
 }
-
+var titles = ['домик', 'ночлег', 'конура', 'нора', 'гнездо', 'облако', 'токио', 'жилье']
 var types = ['palace', 'flat', 'house', 'bungalo'];
 var times = ['12:00', '13:00', '14:00'];
 
@@ -33,11 +33,11 @@ var createArray = function () {
 
   for (var i = 1; i <= 8; i++) {
     var mainObject = {
-      autor: {
+      author: {
         avatar: 'img/avatars/user0' + i + '.png'
       },
       offer: {
-        title: '',
+        title: titles[randomInteger(0, titles.length - 1)],
         address: '',
         price: 0,
         type: types[randomInteger(0, types.length - 1)],
@@ -70,11 +70,11 @@ var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pi
 
 for (var i = 0; i < pins.length; i++) {
   var pin = pinTemplate.cloneNode(true);
-  pin.style.left = pins[i].location.x;
-  pin.style.top = pins[i].location.y;
+  pin.style.left = (pins[i].location.x - 25) + 'px';
+  pin.style.top = (pins[i].location.y - 70) + 'px';
+  pin.querySelector('img').src = pins[i].author.avatar;
+  pin.querySelector('img').alt = pins[i].offer.title;
   console.log(pin);
-  //pin.querySelector('img').src = pins[i].author.avatar;
-  //pin.querySelector('img').alt = pins[i].offer.title;
 
   mapPins.appendChild(pin);
 }
