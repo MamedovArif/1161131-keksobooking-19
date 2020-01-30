@@ -20,32 +20,36 @@ var getArrayRandomLength = function (arr) {
   }
   return part;
 };
-var createOffer = function () {
+var createOffer = function (title, type, checkin, checkout, feature, photo) {
   var offer = {
-    title: titles[randomInteger(0, titles.length - 1)],
+    title: title,
     address: '',
     price: 0,
-    type: types[randomInteger(0, types.length - 1)],
+    type: type,
     rooms: 0,
     guests: 0,
-    checkin: times[randomInteger(0, times.length - 1)],
-    checkout: times[randomInteger(0, times.length - 1)],
-    features: getArrayRandomLength(features),
+    checkin: checkin,
+    checkout: checkout,
+    features: feature,
     description: '',
-    photos: getArrayRandomLength(photos),
+    photos: photo,
   };
   return offer;
 };
 
-var renderAd = function (index) {
+var renderAd = function (index, x1, x2, y1, y2) {
   var mainObject = {
     author: {
       avatar: 'img/avatars/user0' + index + '.png'
     },
-    offer: createOffer(),
+    offer: createOffer(titles[randomInteger(0, titles.length - 1)],
+        types[randomInteger(0, types.length - 1)],
+        times[randomInteger(0, times.length - 1)],
+        times[randomInteger(0, times.length - 1)],
+        getArrayRandomLength(features), getArrayRandomLength(photos)),
     location: {
-      x: randomInteger(0, 500),
-      y: randomInteger(130, 630)
+      x: randomInteger(x1, x2),
+      y: randomInteger(y1, y2)
     }
   };
   return mainObject;
@@ -54,7 +58,7 @@ var renderAd = function (index) {
 var getArrayOfAds = function (numberOfAds) {
   var mainArray = [];
   for (var i = 1; i <= numberOfAds; i++) {
-    mainArray.push(renderAd(i));
+    mainArray.push(renderAd(i, 0, 1000, 130, 630));
   }
   return mainArray;
 };
