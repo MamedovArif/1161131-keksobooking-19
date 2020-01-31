@@ -128,16 +128,15 @@ var renderCard = function (ad) {
   var photosContainer = card.querySelector('.popup__photos');
   photosContainer.querySelector('.popup__photo').src = ad.offer.photos[0];
   if (ad.offer.photos[1]) {
-    photosContainer.insertAdjacentHTML('beforeend', '<img class="popup__photo-second">');
+    photosContainer.insertAdjacentHTML('beforeend', '<img class="popup__photo-second" width="45" height="40">');
     photosContainer.querySelector('.popup__photo-second').src = ad.offer.photos[1];
   }
   if (ad.offer.photos[2]) {
-    photosContainer.insertAdjacentHTML('beforeend', '<img class="popup__photo-third">');
+    photosContainer.insertAdjacentHTML('beforeend', '<img class="popup__photo-third" width="45" height="40">');
     photosContainer.querySelector('.popup__photo-third').src = ad.offer.photos[2];
   }
 
   card.querySelector('.popup__avatar').src = ad.author.avatar;
-
   return card;
 };
 
@@ -145,10 +144,12 @@ var fragment = document.createDocumentFragment();
 var fragment2 = document.createDocumentFragment();
 for (var i = 0; i < arrayOfAds.length; i++) {
   fragment.appendChild(renderPin(arrayOfAds[i]));
-
+  console.log(renderCard(arrayOfAds[i]));
   fragment2.appendChild(renderCard(arrayOfAds[i]));
+  mapPins.appendChild(fragment2);
 }
 mapPins.appendChild(fragment);
+mapPins.appendChild(fragment2);
 
 var mapChildFilters = map.querySelector('.map__filters-container');
-mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
+//mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
