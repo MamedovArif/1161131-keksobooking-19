@@ -127,8 +127,14 @@ var renderCard = function (ad) {
 
   var photosContainer = card.querySelector('.popup__photos');
   photosContainer.querySelector('.popup__photo').src = ad.offer.photos[0];
-  var image = '<a><img></a>';
-  photosContainer.innerHTML = image;
+  if (ad.offer.photos[1]) {
+    photosContainer.insertAdjacentHTML('beforeend', '<img class="popup__photo-second">');
+    photosContainer.querySelector('.popup__photo-second').src = ad.offer.photos[1];
+  }
+  if (ad.offer.photos[2]) {
+    photosContainer.insertAdjacentHTML('beforeend', '<img class="popup__photo-third">');
+    photosContainer.querySelector('.popup__photo-third').src = ad.offer.photos[2];
+  }
 
   card.querySelector('.popup__avatar').src = ad.author.avatar;
 
