@@ -95,16 +95,7 @@ var getType = function (arr) {
     type = 'Бунгало';
   }
   return type;
-}
-/*
-var newName = '<img>Кощей Бессмертный';
-var heroName = document.querySelector('b');
-var getPopupPhot = function(array) {
-  for (var i = 0; i <= array.length; i++) {
-    heroName.innerHTML = newName;
-  }
-}
-*/
+};
 
 var renderCard = function (ad) {
   var card = cardTemplate.cloneNode(true);
@@ -114,31 +105,44 @@ var renderCard = function (ad) {
   card.querySelector('.popup__type').textContent = getType(ad);
   card.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
   card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ' выезд до ' + ad.offer.checkout;
-  //card.querySelector('.popup__features').textContent = getPopupPhot(ad.offer.features);
+  var cardFeaturesList = card.querySelector('.popup__features');
+  cardFeaturesList.querySelector('.popup__feature--wifi').textContent = ad.offer.features[0];
+  if (ad.offer.features[1]) {
+    cardFeaturesList.querySelector('.popup__feature--dishwasher').textContent = ad.offer.features[1];
+  }
+  if (ad.offer.features[2]) {
+    cardFeaturesList.querySelector('.popup__feature--parking').textContent = ad.offer.features[2];
+  }
+  if (ad.offer.features[3]) {
+    cardFeaturesList.querySelector('.popup__feature--washer').textContent = ad.offer.features[3];
+  }
+  if (ad.offer.features[4]) {
+    cardFeaturesList.querySelector('.popup__feature--elevator').textContent = ad.offer.features[4];
+  }
+  if (ad.offer.features[5]) {
+    cardFeaturesList.querySelector('.popup__feature--conditioner').textContent = ad.offer.features[5];
+  }
   card.querySelector('.popup__description').textContent = ad.offer.description;
-  //card.querySelector('popup__photos').src = getPopupPhot(ad.offer.photos);
+
+
+  var photosContainer = card.querySelector('.popup__photos');
+  photosContainer.querySelector('.popup__photo').src = ad.offer.photos[0];
+  var image = '<a><img></a>';
+  photosContainer.innerHTML = image;
 
   card.querySelector('.popup__avatar').src = ad.author.avatar;
 
   return card;
-}
+};
 
 var fragment = document.createDocumentFragment();
 var fragment2 = document.createDocumentFragment();
 for (var i = 0; i < arrayOfAds.length; i++) {
   fragment.appendChild(renderPin(arrayOfAds[i]));
+
   fragment2.appendChild(renderCard(arrayOfAds[i]));
 }
 mapPins.appendChild(fragment);
-console.log(fragment);
 
 var mapChildFilters = map.querySelector('.map__filters-container');
-//mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
-//mapPins.insertAdjacentHTML('afterend', fragment2);
-
-
-  //arrayOfAds[i].offer.photos; insertAdjacentHTML
-
-
-
-
+mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
