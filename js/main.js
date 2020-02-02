@@ -1,5 +1,5 @@
 'use strict';
-
+var NUMBER_OF_ADS = 8;
 function randomInteger(min, max) {
   var rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
@@ -63,10 +63,10 @@ var getArrayOfAds = function (numberOfAds) {
   return mainArray;
 };
 
-var arrayOfAds = getArrayOfAds(8);
+var arrayOfAds = getArrayOfAds(NUMBER_OF_ADS);
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+
 
 var mapPins = map.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -144,12 +144,69 @@ var fragment = document.createDocumentFragment();
 var fragment2 = document.createDocumentFragment();
 for (var i = 0; i < arrayOfAds.length; i++) {
   fragment.appendChild(renderPin(arrayOfAds[i]));
-  console.log(renderCard(arrayOfAds[i]));
+  //console.log(renderCard(arrayOfAds[i]));
   fragment2.appendChild(renderCard(arrayOfAds[i]));
-  mapPins.appendChild(fragment2);
 }
-mapPins.appendChild(fragment);
-mapPins.appendChild(fragment2);
 
+var form = document.querySelector('.ad-form');
+var formInputs = form.querySelectorAll('fieldset');
 var mapChildFilters = map.querySelector('.map__filters-container');
+var mapFilters = mapChildFilters.querySelectorAll('select');
+var mapFeatures = mapChildFilters.querySelector('.map__features');
+var mainPin = mapPins.querySelector('.map__pin--main');
+var inputAddress = form.querySelector('input[name = address]');
+var selectRooms = form.querySelector('select[name = rooms]');
+var selectCapacity = form.querySelector('select[name = capacity]');
+
+
+var addDisable = function (arr) {
+  for( var i = 0; i < arr.length; i++ ){
+    //formInputs[i].setAttribute('disabled', 'disabled');
+    arr[i].disabled = true;
+  }
+}
+addDisable(formInputs);
+addDisable(mapFilters);
+mapFeatures.disabled = true;
+
+var removeDisable = function (arr) {
+  for ( var i = 0; i < arr.length; i++ ) {
+    arr[i].disabled = false;
+  }
+};
+
+var activation = function () {
+  mapPins.appendChild(fragment);
+  map.classList.remove('map--faded');
+  removeDisable(formInputs);
+  removeDisable(mapFilters);
+
+//mapPins.appendChild(fragment2);
+//
 //mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
+}
+var INITIAL_SIZE_PIN = 200;
+var SIZE_PIN = 65;
+var SHARP_END_Y = 22;
+var INITIAL_X = parseInt(mainPin.style.left);
+var INITIAL_Y = parseInt(mainPin.style.top);
+console.log(INITIAL_X);
+var initialCoorX = INITIAL_X + INITIAL_SIZE_PIN / 2;
+var initialCoorY = INITIAL_Y + INITIAL_SIZE_PIN / 2;
+var coorY = initialCoorY + SIZE_PIN / 2 + SHARP_END_Y;
+
+var getAddress = function () {
+  inputAddress.value = initialCoorX + 'px ' + coorY + 'px';
+}
+
+mainPin.addEventListener('mousedown', function() {
+  activation();
+  getAddress();
+});
+mainPin.addEventListener('keydown', function(evt) {
+  if (evt.keyCode === 13) {
+    activation();
+  }
+});
+
+inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
