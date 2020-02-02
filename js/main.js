@@ -157,6 +157,21 @@ var mainPin = mapPins.querySelector('.map__pin--main');
 var inputAddress = form.querySelector('input[name = address]');
 var selectRooms = form.querySelector('select[name = rooms]');
 var selectCapacity = form.querySelector('select[name = capacity]');
+var optionRooms = selectRooms.querySelectorAll('option');
+var optionCapacity = selectCapacity.querySelectorAll('option');
+/*
+selectRooms.addEventListener('invalid', function (evt) {
+  if (optionRooms[0].hasAttribute === selected && option.hasAttribute === selected ||
+    option.hasAttribute === selected && option.hasAttribute === selected) {
+    selectRooms.setCustomValidity('В одной комнате может поместиться один гость');
+  } else if () {
+    userNameInput.setCustomValidity('В двух комнатах могут поместиться не более двух гостей');
+  } else if () {
+    userNameInput.setCustomValidity('В трёх комнатах могут поместиться не более трёх гостей');
+  } else if () {
+    userNameInput.setCustomValidity('Этот вариант не для гостей');
+  }
+} */
 
 
 var addDisable = function (arr) {
