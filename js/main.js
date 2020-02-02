@@ -107,6 +107,7 @@ var renderCard = function (ad) {
   card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ' выезд до ' + ad.offer.checkout;
   var cardFeaturesList = card.querySelector('.popup__features');
   cardFeaturesList.querySelector('.popup__feature--wifi').textContent = ad.offer.features[0];
+
   if (ad.offer.features[1]) {
     cardFeaturesList.querySelector('.popup__feature--dishwasher').textContent = ad.offer.features[1];
   }
@@ -144,7 +145,7 @@ var fragment = document.createDocumentFragment();
 var fragment2 = document.createDocumentFragment();
 for (var i = 0; i < arrayOfAds.length; i++) {
   fragment.appendChild(renderPin(arrayOfAds[i]));
-  //console.log(renderCard(arrayOfAds[i]));
+  //  console.log(renderCard(arrayOfAds[i]));
   fragment2.appendChild(renderCard(arrayOfAds[i]));
 }
 
@@ -157,36 +158,38 @@ var mainPin = mapPins.querySelector('.map__pin--main');
 var inputAddress = form.querySelector('input[name = address]');
 var selectRooms = form.querySelector('select[name = rooms]');
 var selectCapacity = form.querySelector('select[name = capacity]');
-var optionRooms = selectRooms.querySelectorAll('option');
-var optionCapacity = selectCapacity.querySelectorAll('option');
-/*
-selectRooms.addEventListener('invalid', function (evt) {
-  if (optionRooms[0].hasAttribute === selected && option.hasAttribute === selected ||
-    option.hasAttribute === selected && option.hasAttribute === selected) {
-    selectRooms.setCustomValidity('В одной комнате может поместиться один гость');
-  } else if () {
-    userNameInput.setCustomValidity('В двух комнатах могут поместиться не более двух гостей');
-  } else if () {
-    userNameInput.setCustomValidity('В трёх комнатах могут поместиться не более трёх гостей');
-  } else if () {
-    userNameInput.setCustomValidity('Этот вариант не для гостей');
-  }
-} */
+// var optionRooms = selectRooms.querySelectorAll('option');
+// var optionCapacity = selectCapacity.querySelectorAll('option');
 
+selectRooms.addEventListener('invalid', function () {
+  if (selectRooms.value === '1' && selectCapacity.value === '2' ||
+    selectRooms.value === '1' && selectCapacity.value === '3' ||
+    selectRooms.value === '1' && selectCapacity.value === '0') {
+    selectRooms.setCustomValidity('В одной комнате может поместиться один гость');
+  } else if (selectRooms.value === '2' && selectCapacity.value === '3' ||
+    selectRooms.value === '2' && selectCapacity.value === '0') {
+    selectRooms.setCustomValidity('В двух комнатах могут поместиться не более двух гостей');
+  } else if (selectRooms.value === '3' && selectCapacity.value === '0') {
+    selectRooms.setCustomValidity('В трёх комнатах могут поместиться не более трёх гостей');
+  } else if (selectRooms.value === '100' && selectCapacity.value === '1' ||
+    selectRooms.value === '2' && selectCapacity.value === '2' ||
+    selectRooms.value === '2' && selectCapacity.value === '3') {
+    selectRooms.setCustomValidity('Этот вариант не для гостей');
+  }
+});
 
 var addDisable = function (arr) {
-  for( var i = 0; i < arr.length; i++ ){
-    //formInputs[i].setAttribute('disabled', 'disabled');
-    arr[i].disabled = true;
+  for (var j = 0; j < arr.length; j++) {
+    arr[j].disabled = true;
   }
-}
+};
 addDisable(formInputs);
 addDisable(mapFilters);
 mapFeatures.disabled = true;
 
 var removeDisable = function (arr) {
-  for ( var i = 0; i < arr.length; i++ ) {
-    arr[i].disabled = false;
+  for (var y = 0; y < arr.length; y++) {
+    arr[y].disabled = false;
   }
 };
 
@@ -196,29 +199,27 @@ var activation = function () {
   removeDisable(formInputs);
   removeDisable(mapFilters);
 
-//mapPins.appendChild(fragment2);
-//
-//mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
-}
+// mapPins.appendChild(fragment2);
+// mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
+};
 var INITIAL_SIZE_PIN = 200;
 var SIZE_PIN = 65;
 var SHARP_END_Y = 22;
-var INITIAL_X = parseInt(mainPin.style.left);
-var INITIAL_Y = parseInt(mainPin.style.top);
-console.log(INITIAL_X);
+var INITIAL_X = parseInt(mainPin.style.left, 10);
+var INITIAL_Y = parseInt(mainPin.style.top, 10);
 var initialCoorX = INITIAL_X + INITIAL_SIZE_PIN / 2;
 var initialCoorY = INITIAL_Y + INITIAL_SIZE_PIN / 2;
 var coorY = initialCoorY + SIZE_PIN / 2 + SHARP_END_Y;
 
 var getAddress = function () {
   inputAddress.value = initialCoorX + 'px ' + coorY + 'px';
-}
+};
 
-mainPin.addEventListener('mousedown', function() {
+mainPin.addEventListener('mousedown', function () {
   activation();
   getAddress();
 });
-mainPin.addEventListener('keydown', function(evt) {
+mainPin.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 13) {
     activation();
   }
