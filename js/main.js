@@ -164,29 +164,50 @@ var submit = form.querySelector('.ad-form__submit');
 var timein = form.querySelector('select[name = timein]');
 var timeout = form.querySelector('select[name = timeout]');
 
+var typeHousing = form.querySelector('select[name = type]');
+var pricePerNight = form.querySelector('input[name = price]');
+
 //var optionRooms = selectRooms.options;
 //var optionCapacity = selectCapacity.querySelectorAll('option');
+/*pricePerNight.addEventListener('click', function () {
+  console.log(typeof(pricePerNight.value));
+}); */
+
+typeHousing.addEventListener('click', function (evt) {
+  if (typeHousing.value === 'flat' && Number(pricePerNight.value) <= 1000) {
+    typeHousing.setCustomValidity(
+      'У квартиры минимальная цена за ночь, должно быть не меньше 1000 рублей')
+  } else if (typeHousing.value === 'house' && Number(pricePerNight.value) <= 5000) {
+    typeHousing.setCustomValidity(
+      'У дома минимальная цена за ночь, должно быть не меньше 5000 рублей')
+  } else if (typeHousing.value === 'palace' && Number(pricePerNight.value) <= 10000) {
+    typeHousing.setCustomValidity(
+      'У дворца минимальная цена за ночь, должно быть не меньше 10 000 рублей')
+  } else {
+      typeHousing.setCustomValidity('');
+  }
+});
+
 
 timein.addEventListener('click', function (evt) {
-  if (timein.value === "12:00") {
-    timeout.value = "12:00";
-  } else if (timein.value === "13:00") {
-    timeout.value = "13:00";
-  } else if (timein.value === "14:00") {
-    timeout.value = "14:00";
+  if (timein.value === '12:00') {
+    timeout.value = '12:00';
+  } else if (timein.value === '13:00') {
+    timeout.value = '13:00';
+  } else if (timein.value === '14:00') {
+    timeout.value = '14:00';
   }
 });
 
 timeout.addEventListener('click', function (evt) {
-  if (timeout.value === "12:00") {
-    timein.value = "12:00";
-  } else if (timeout.value === "13:00") {
-    timein.value = "13:00";
-  } else if (timeout.value === "14:00") {
-    timein.value = "14:00";
+  if (timeout.value === '12:00') {
+    timein.value = '12:00';
+  } else if (timeout.value === '13:00') {
+    timein.value = '13:00';
+  } else if (timeout.value === '14:00') {
+    timein.value = '14:00';
   }
 });
-
 
 submit.addEventListener('click', function (evt) {
   if (selectRooms.value == '1' && selectCapacity.value == '2' ||
