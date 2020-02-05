@@ -313,5 +313,3 @@ mainPin.addEventListener('keydown', function (evt) {
 });
 
 inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
-
-
