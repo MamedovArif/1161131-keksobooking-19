@@ -147,7 +147,6 @@ for (var i = 0; i < arrayOfAds.length; i++) {
 }
 
 
-
 var form = document.querySelector('.ad-form');
 var formInputs = form.querySelectorAll('fieldset');
 var mapChildFilters = map.querySelector('.map__filters-container');
@@ -167,29 +166,29 @@ var timeout = form.querySelector('select[name = timeout]');
 var typeHousing = form.querySelector('select[name = type]');
 var pricePerNight = form.querySelector('input[name = price]');
 
-//var optionRooms = selectRooms.options;
-//var optionCapacity = selectCapacity.querySelectorAll('option');
-/*pricePerNight.addEventListener('click', function () {
-  console.log(typeof(pricePerNight.value));
+//  var optionRooms = selectRooms.options;
+//  var optionCapacity = selectCapacity.querySelectorAll('option');
+/* pricePerNight.addEventListener('click', function () {
+   console.log(typeof(pricePerNight.value));
 }); */
 
-typeHousing.addEventListener('click', function (evt) {
+typeHousing.addEventListener('click', function () {
   if (typeHousing.value === 'flat' && Number(pricePerNight.value) <= 1000) {
     typeHousing.setCustomValidity(
-      'У квартиры минимальная цена за ночь, должно быть не меньше 1000 рублей')
+        'У квартиры минимальная цена за ночь, должно быть не меньше 1000 рублей');
   } else if (typeHousing.value === 'house' && Number(pricePerNight.value) <= 5000) {
     typeHousing.setCustomValidity(
-      'У дома минимальная цена за ночь, должно быть не меньше 5000 рублей')
+        'У дома минимальная цена за ночь, должно быть не меньше 5000 рублей');
   } else if (typeHousing.value === 'palace' && Number(pricePerNight.value) <= 10000) {
     typeHousing.setCustomValidity(
-      'У дворца минимальная цена за ночь, должно быть не меньше 10 000 рублей')
+        'У дворца минимальная цена за ночь, должно быть не меньше 10 000 рублей');
   } else {
-      typeHousing.setCustomValidity('');
+    typeHousing.setCustomValidity('');
   }
 });
 
 
-timein.addEventListener('click', function (evt) {
+timein.addEventListener('click', function () {
   if (timein.value === '12:00') {
     timeout.value = '12:00';
   } else if (timein.value === '13:00') {
@@ -199,7 +198,7 @@ timein.addEventListener('click', function (evt) {
   }
 });
 
-timeout.addEventListener('click', function (evt) {
+timeout.addEventListener('click', function () {
   if (timeout.value === '12:00') {
     timein.value = '12:00';
   } else if (timeout.value === '13:00') {
@@ -209,10 +208,10 @@ timeout.addEventListener('click', function (evt) {
   }
 });
 
-submit.addEventListener('click', function (evt) {
-  if (selectRooms.value == '1' && selectCapacity.value == '2' ||
-    selectRooms.value == '1' && selectCapacity.value == '3' ||
-    selectRooms.value == '1' && selectCapacity.value == '0') {
+submit.addEventListener('click', function () {
+  if (selectRooms.value === '1' && selectCapacity.value === '2' ||
+    selectRooms.value === '1' && selectCapacity.value === '3' ||
+    selectRooms.value === '1' && selectCapacity.value === '0') {
     selectRooms.setCustomValidity('В одной комнате может поместиться один гость');
   } else if (selectRooms.value === '2' && selectCapacity.value === '3' ||
     selectRooms.value === '2' && selectCapacity.value === '0') {
@@ -250,43 +249,43 @@ var activation = function () {
   removeDisable(mapFilters);
 
   mapPins.appendChild(fragment2);
-// mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
+  // mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
 
 
-var adCards = mapPins.querySelectorAll('.map__card');
-var labels = mapPins.querySelectorAll('.map__pin');
+  var adCards = mapPins.querySelectorAll('.map__card');
+  var labels = mapPins.querySelectorAll('.map__pin');
 
-for (var u = 0; u < adCards.length; u++) {
-  adCards[u].hidden = true;
-}
-var addLabelClickHandler = function (label, card) {
-  label.addEventListener('click', function () {
-    card.hidden = false;
-    var adClose = card.querySelector('.popup__close');
-    adClose.addEventListener('click', function() {
-      card.hidden = true;
-    });
-    document.addEventListener('keydown', function(evt) {
-      if (evt.keyCode === 27) {
+  for (var u = 0; u < adCards.length; u++) {
+    adCards[u].hidden = true;
+  }
+  var addLabelClickHandler = function (label, card) {
+    label.addEventListener('click', function () {
+      card.hidden = false;
+      var adClose = card.querySelector('.popup__close');
+      adClose.addEventListener('click', function () {
         card.hidden = true;
-      }
+      });
+      document.addEventListener('keydown', function (evt) {
+        if (evt.keyCode === 27) {
+          card.hidden = true;
+        }
+      });
     });
-  });
-};
+  };
 
-for (var r = 1; r < labels.length; r++) {
-  addLabelClickHandler(labels[r], adCards[r - 1]);
-}
+  for (var r = 1; r < labels.length; r++) {
+    addLabelClickHandler(labels[r], adCards[r - 1]);
+  }
 
 
-/*
-labels[1].addEventListener('click', function() {
-  adCards[0].hidden = false;
-  var adClose = adCards[0].querySelector('.popup__close');
-  adClose.addEventListener('click', function() {
-    adCards[0].hidden = true;
-  });
-}); */
+  /*
+  labels[1].addEventListener('click', function() {
+    adCards[0].hidden = false;
+    var adClose = adCards[0].querySelector('.popup__close');
+    adClose.addEventListener('click', function() {
+      adCards[0].hidden = true;
+    });
+  }); */
 
 };
 
