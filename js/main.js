@@ -66,10 +66,9 @@ var getArrayOfAds = function (numberOfAds) {
 var arrayOfAds = getArrayOfAds(NUMBER_OF_ADS);
 
 var map = document.querySelector('.map');
-
-
 var mapPins = map.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 var renderPin = function (ad) {
   var pin = pinTemplate.cloneNode(true);
@@ -80,8 +79,6 @@ var renderPin = function (ad) {
 
   return pin;
 };
-
-var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 var getType = function (arr) {
   var type;
@@ -149,6 +146,8 @@ for (var i = 0; i < arrayOfAds.length; i++) {
   fragment2.appendChild(renderCard(arrayOfAds[i]));
 }
 
+
+
 var form = document.querySelector('.ad-form');
 var formInputs = form.querySelectorAll('fieldset');
 var mapChildFilters = map.querySelector('.map__filters-container');
@@ -158,6 +157,7 @@ var mainPin = mapPins.querySelector('.map__pin--main');
 var inputAddress = form.querySelector('input[name = address]');
 var selectRooms = form.querySelector('select[name = rooms]');
 var selectCapacity = form.querySelector('select[name = capacity]');
+
 // var optionRooms = selectRooms.querySelectorAll('option');
 // var optionCapacity = selectCapacity.querySelectorAll('option');
 
@@ -199,9 +199,47 @@ var activation = function () {
   removeDisable(formInputs);
   removeDisable(mapFilters);
 
-// mapPins.appendChild(fragment2);
+  mapPins.appendChild(fragment2);
 // mapChildFilters.insertAdjacentHTML('beforebegin', fragment2);
+
+
+var adCards = mapPins.querySelectorAll('.map__card');
+var labels = mapPins.querySelectorAll('.map__pin');
+
+for (var u = 0; u < adCards.length; u++) {
+  adCards[u].hidden = true;
+}
+var addLabelClickHandler = function (label, card) {
+  label.addEventListener('click', function () {
+    card.hidden = false;
+    var adClose = card.querySelector('.popup__close');
+    adClose.addEventListener('click', function() {
+      card.hidden = true;
+    });
+    document.addEventListener('keydown', function(evt) {
+      if (evt.keyCode === 27) {
+        card.hidden = true;
+      }
+    });
+  });
 };
+
+for (var r = 1; r < labels.length; r++) {
+  addLabelClickHandler(labels[r], adCards[r - 1]);
+}
+
+
+/*
+labels[1].addEventListener('click', function() {
+  adCards[0].hidden = false;
+  var adClose = adCards[0].querySelector('.popup__close');
+  adClose.addEventListener('click', function() {
+    adCards[0].hidden = true;
+  });
+}); */
+
+};
+
 var INITIAL_SIZE_PIN = 200;
 var SIZE_PIN = 65;
 var SHARP_END_Y = 22;
@@ -226,3 +264,5 @@ mainPin.addEventListener('keydown', function (evt) {
 });
 
 inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
+
+
