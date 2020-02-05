@@ -155,16 +155,43 @@ var mapFilters = mapChildFilters.querySelectorAll('select');
 var mapFeatures = mapChildFilters.querySelector('.map__features');
 var mainPin = mapPins.querySelector('.map__pin--main');
 var inputAddress = form.querySelector('input[name = address]');
+
 var selectRooms = form.querySelector('select[name = rooms]');
 var selectCapacity = form.querySelector('select[name = capacity]');
 
-// var optionRooms = selectRooms.querySelectorAll('option');
-// var optionCapacity = selectCapacity.querySelectorAll('option');
+var submit = form.querySelector('.ad-form__submit');
 
-selectRooms.addEventListener('invalid', function () {
-  if (selectRooms.value === '1' && selectCapacity.value === '2' ||
-    selectRooms.value === '1' && selectCapacity.value === '3' ||
-    selectRooms.value === '1' && selectCapacity.value === '0') {
+var timein = form.querySelector('select[name = timein]');
+var timeout = form.querySelector('select[name = timeout]');
+
+//var optionRooms = selectRooms.options;
+//var optionCapacity = selectCapacity.querySelectorAll('option');
+
+timein.addEventListener('click', function (evt) {
+  if (timein.value === "12:00") {
+    timeout.value = "12:00";
+  } else if (timein.value === "13:00") {
+    timeout.value = "13:00";
+  } else if (timein.value === "14:00") {
+    timeout.value = "14:00";
+  }
+});
+
+timeout.addEventListener('click', function (evt) {
+  if (timeout.value === "12:00") {
+    timein.value = "12:00";
+  } else if (timeout.value === "13:00") {
+    timein.value = "13:00";
+  } else if (timeout.value === "14:00") {
+    timein.value = "14:00";
+  }
+});
+
+
+submit.addEventListener('click', function (evt) {
+  if (selectRooms.value == '1' && selectCapacity.value == '2' ||
+    selectRooms.value == '1' && selectCapacity.value == '3' ||
+    selectRooms.value == '1' && selectCapacity.value == '0') {
     selectRooms.setCustomValidity('В одной комнате может поместиться один гость');
   } else if (selectRooms.value === '2' && selectCapacity.value === '3' ||
     selectRooms.value === '2' && selectCapacity.value === '0') {
@@ -172,9 +199,11 @@ selectRooms.addEventListener('invalid', function () {
   } else if (selectRooms.value === '3' && selectCapacity.value === '0') {
     selectRooms.setCustomValidity('В трёх комнатах могут поместиться не более трёх гостей');
   } else if (selectRooms.value === '100' && selectCapacity.value === '1' ||
-    selectRooms.value === '2' && selectCapacity.value === '2' ||
-    selectRooms.value === '2' && selectCapacity.value === '3') {
+    selectRooms.value === '100' && selectCapacity.value === '2' ||
+    selectRooms.value === '100' && selectCapacity.value === '3') {
     selectRooms.setCustomValidity('Этот вариант не для гостей');
+  } else {
+    selectRooms.setCustomValidity('');
   }
 });
 
