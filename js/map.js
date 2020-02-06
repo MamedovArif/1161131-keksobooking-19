@@ -1,3 +1,4 @@
+'use strict';
 (function () {
   var map = document.querySelector('.map');
   var mapPins = map.querySelector('.map__pins');
@@ -16,9 +17,9 @@
   var fragment = document.createDocumentFragment();
   var fragment2 = document.createDocumentFragment();
   for (var i = 0; i < window.arrayOfAds.length; i++) {
-  fragment.appendChild(renderPin(window.arrayOfAds[i]));
-  //  console.log(renderCard(arrayOfAds[i]));
-  fragment2.appendChild(window.card.renderCard(window.arrayOfAds[i]));
+    fragment.appendChild(renderPin(window.arrayOfAds[i]));
+    //  console.log(renderCard(arrayOfAds[i]));
+    fragment2.appendChild(window.card.renderCard(window.arrayOfAds[i]));
   }
 
   window.map = {
@@ -26,6 +27,6 @@
     mapPins: mapPins,
     fragment: fragment,
     fragment2: fragment2,
-  }
+  };
 
 })();

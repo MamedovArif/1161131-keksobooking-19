@@ -1,3 +1,4 @@
+'use strict';
 (function () {
   var createOffer = function (title, type, checkin, checkout, feature, photo) {
     var offer = {
@@ -13,7 +14,7 @@
       description: 'vklllfk fnlkklvl fnlkkjfjfl',
       photos: photo,
     };
-  return offer;
+    return offer;
   };
 
   var renderAd = function (index, x1, x2, y1, y2) {

@@ -1,3 +1,4 @@
+'use strict';
 (function () {
   var NUMBER_OF_ADS = 8;
   function randomInteger(min, max) {
@@ -29,5 +30,5 @@
     photos: photos,
     randomInteger: randomInteger,
     getArrayRandomLength: getArrayRandomLength,
-  }
+  };
 })();

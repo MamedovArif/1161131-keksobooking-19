@@ -1,9 +1,10 @@
+'use strict';
 (function () {
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
   var getType = function (arr) {
     var type;
-    switch(arr.offer.type) {
+    switch (arr.offer.type) {
       case 'palace':
         type = 'Дворец';
         break;
@@ -16,7 +17,7 @@
       case 'bungalo':
         type = 'Бунгало';
         break;
-      }
+    }
     return type;
   };
 
@@ -67,5 +68,5 @@
 
   window.card = {
     renderCard: renderCard,
-  }
+  };
 })();

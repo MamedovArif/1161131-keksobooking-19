@@ -1,3 +1,4 @@
+'use strict';
 (function () {
   var mapChildFilters = window.map.map.querySelector('.map__filters-container');
   var mapFilters = mapChildFilters.querySelectorAll('select');
@@ -32,7 +33,7 @@
 
 
   timein.addEventListener('click', function () {
-    switch(timein.value) {
+    switch (timein.value) {
       case '12:00':
         timeout.value = '12:00';
         break;
@@ -46,7 +47,7 @@
   });
 
   timeout.addEventListener('click', function () {
-    switch(timeout.value) {
+    switch (timeout.value) {
       case '12:00':
         timein.value = '12:00';
         break;
