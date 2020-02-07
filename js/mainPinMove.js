@@ -9,11 +9,11 @@
       y: evt.clientY
     };
 
-    //var dragged = false;
+    // var dragged = false;
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      //dragged = true;
+      // dragged = true;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -26,11 +26,11 @@
       };
       if (parseInt(window.map.mainPin.style.top, 10) >= 130 &&
         parseInt(window.map.mainPin.style.top, 10) <= 630) {
-      window.map.mainPin.style.top = (window.map.mainPin.offsetTop - shift.y) + 'px';
+        window.map.mainPin.style.top = (window.map.mainPin.offsetTop - shift.y) + 'px';
       }
       window.map.mainPin.style.left = (window.map.mainPin.offsetLeft - shift.x) + 'px';
-      window.form.inputAddress.value = (window.map.mainPin.offsetLeft - shift.x + window.form.SIZE_PIN/2) + 'px ' +
-      (window.map.mainPin.offsetTop - shift.y + window.form.SIZE_PIN/2 + window.form.SHARP_END_Y) + 'px';
+      window.form.inputAddress.value = (window.map.mainPin.offsetLeft - shift.x + window.form.SIZE_PIN / 2) + 'px ' +
+      (window.map.mainPin.offsetTop - shift.y + window.form.SIZE_PIN / 2 + window.form.SHARP_END_Y) + 'px';
 
 
     };
@@ -41,7 +41,7 @@
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
 
-    /*  if (dragged) {
+      /*  if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
           dialogHandler.removeEventListener('click', onClickPreventDefault)

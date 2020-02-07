@@ -170,5 +170,5 @@
     inputAddress: inputAddress,
     SIZE_PIN: SIZE_PIN,
     SHARP_END_Y: SHARP_END_Y
-  }
+  };
 })();
