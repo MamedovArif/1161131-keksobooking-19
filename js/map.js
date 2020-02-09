@@ -3,6 +3,7 @@
   var map = document.querySelector('.map');
   var mapPins = map.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+  var mainPin = mapPins.querySelector('.map__pin--main');
 
   var renderPin = function (ad) {
     var pin = pinTemplate.cloneNode(true);
@@ -27,6 +28,7 @@
     mapPins: mapPins,
     fragment: fragment,
     fragment2: fragment2,
+    mainPin: mainPin
   };
 
 })();
