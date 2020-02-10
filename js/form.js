@@ -94,6 +94,14 @@
     }
   };
 
+  var inactive = function () {
+    window.map.map.classList.add('map--faded');
+    addDisable(formInputs);
+    addDisable(mapFilters);
+    mapFeatures.disabled = true;
+    inputAddress.value = '';
+  };
+
   var activation = function () {
     window.map.mapPins.appendChild(window.map.fragment);
     window.map.map.classList.remove('map--faded');
@@ -165,10 +173,37 @@
 
   inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
 
+
+  form.addEventListener('submit', function (evt) {
+    window.server.upload(new FormData(form), function () {
+      inactive();
+      var successTemplate = document.querySelector('#success').content.querySelector('.success');
+      var success = successTemplate.cloneNode(true);
+      //success.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+      success.style.position = 'absolute';
+      success.style.left = 0;
+      success.style.right = 0;
+      //success.style.fontSize = '30px';
+      //success.textContent = message;
+      document.body.insertAdjacentElement('afterbegin', success);
+    }, function () {
+      var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+      var error = errorTemplate.cloneNode(true);
+      error.style.position = 'absolute';
+      error.style.left = 0;
+      error.style.right = 0;
+      //node.style.fontSize = '30px';
+      //node.textContent = text;
+      document.body.insertAdjacentElement('afterbegin', error);
+    });
+    evt.preventDefault();
+  });
+  /////
   window.form = {
     getAddress: getAddress,
     inputAddress: inputAddress,
     SIZE_PIN: SIZE_PIN,
     SHARP_END_Y: SHARP_END_Y
   };
+
 })();
