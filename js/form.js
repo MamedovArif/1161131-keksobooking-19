@@ -84,13 +84,29 @@
       arr[j].disabled = true;
     }
   };
-  addDisable(formInputs);
-  addDisable(mapFilters);
-  mapFeatures.disabled = true;
 
   var removeDisable = function (arr) {
     for (var y = 0; y < arr.length; y++) {
       arr[y].disabled = false;
+    }
+  };
+
+    var clear = function () {
+    var inputs = form.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].value = '';
+    }
+    var selects = form.querySelectorAll('select');
+    for (var h = 0; h < selects.length; h++) {
+      selects[h].selectedIndex = 0;
+    }
+    form.querySelector('textarea').value = ' ';
+    typeHousing.selectedIndex = 1;
+    inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
+    var featuresForm = form.querySelector('.features');
+    var checkboxes = featuresForm.querySelector('input');
+    for (var g = 0; g < selects.length; g++) {
+      selects[g].checked = true;
     }
   };
 
@@ -100,6 +116,7 @@
     addDisable(mapFilters);
     mapFeatures.disabled = true;
     inputAddress.value = '';
+    clear();
   };
 
   var activation = function () {
@@ -107,6 +124,7 @@
     window.map.map.classList.remove('map--faded');
     removeDisable(formInputs);
     removeDisable(mapFilters);
+    mapFeatures.disabled = false;
 
     window.map.mapPins.appendChild(window.map.fragment2);
     // mapChildFilters.insertAdjacentHTML('beforebegin', window.map.fragment2);
@@ -147,6 +165,8 @@
 
   };
 
+  inactive();
+
   var INITIAL_SIZE_PIN = 200;
   var SIZE_PIN = 65;
   var SHARP_END_Y = 22;
@@ -179,26 +199,48 @@
       inactive();
       var successTemplate = document.querySelector('#success').content.querySelector('.success');
       var success = successTemplate.cloneNode(true);
-      //success.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-      success.style.position = 'absolute';
-      success.style.left = 0;
-      success.style.right = 0;
-      //success.style.fontSize = '30px';
-      //success.textContent = message;
       document.body.insertAdjacentElement('afterbegin', success);
+      document.addEventListener('click', function(evt) {
+        evt.preventDefault();
+        success.style = 'display: none;';
+      });
+      document.addEventListener('keydown', function (evt) {
+        evt.preventDefault();
+        if (evt.keyCode === 27) {
+          success.style = 'display: none;';
+        }
+      });
+      inactive();
     }, function () {
       var errorTemplate = document.querySelector('#error').content.querySelector('.error');
       var error = errorTemplate.cloneNode(true);
-      error.style.position = 'absolute';
-      error.style.left = 0;
-      error.style.right = 0;
-      //node.style.fontSize = '30px';
-      //node.textContent = text;
-      document.body.insertAdjacentElement('afterbegin', error);
+      document.querySelector('main').insertAdjacentElement('beforeend', error);
+      var errButton = error.querySelector('.error__button');
+      document.addEventListener('click', function(evt) {
+        evt.preventDefault();
+        error.style = 'display: none;';
+      });
+      document.addEventListener('keydown', function (evt) {
+        evt.preventDefault();
+        if (evt.keyCode === 27) {
+          error.style = 'display: none;';
+        }
+      });
     });
     evt.preventDefault();
   });
-  /////
+
+
+
+  var clearButton = form.querySelector('.ad-form__reset');
+  clearButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    clear();
+  });
+
+
+
+
   window.form = {
     getAddress: getAddress,
     inputAddress: inputAddress,

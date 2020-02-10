@@ -24,7 +24,7 @@
   var fragment = document.createDocumentFragment();
 
   var successHandler = function (pins) {
-    for (var k = 1; k <= 8; i++) {
+    for (var k = 1; k <= 8; k++) {
       fragment.appendChild(renderPin(pins[k]));
     }
   };
