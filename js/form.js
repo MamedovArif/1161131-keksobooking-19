@@ -92,7 +92,7 @@
     }
   };
 
-    var clear = function () {
+  var clear = function () {
     form.querySelector('input[name = title]').value = '';
     pricePerNight.value = null;
     var features = form.querySelectorAll('input[name = features]');
@@ -107,11 +107,6 @@
     form.querySelector('textarea').value = ' ';
     typeHousing.selectedIndex = 1;
     inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
-    var featuresForm = form.querySelector('.features');
-    var checkboxes = featuresForm.querySelector('input');
-    for (var g = 0; g < selects.length; g++) {
-      selects[g].checked = true;
-    }
   };
 
 
@@ -123,11 +118,11 @@
     }
   };
 
-  var createPins = function () {
+  var showPins = function () {
     for (var d = 1; d < mapPin.length; d++) {
       mapPin[d].classList.remove('hidden');
-    };
-  }
+    }
+  };
 
   var inactive = function () {
     clear();
@@ -144,7 +139,7 @@
     removeDisable(formInputs);
     removeDisable(mapFilters);
     mapFeatures.disabled = false;
-    createPins();
+    showPins();
 
     window.map.mapPins.appendChild(window.map.fragment2);
     // mapChildFilters.insertAdjacentHTML('beforebegin', window.map.fragment2);
@@ -174,14 +169,6 @@
     for (var r = 1; r < labels.length; r++) {
       addLabelClickHandler(labels[r], adCards[r - 1]);
     }
-    /*
-    labels[1].addEventListener('click', function() {
-      adCards[0].hidden = false;
-      var adClose = adCards[0].querySelector('.popup__close');
-      adClose.addEventListener('click', function() {
-        adCards[0].hidden = true;
-      });
-    }); */
 
   };
 
@@ -220,30 +207,29 @@
       var successTemplate = document.querySelector('#success').content.querySelector('.success');
       var success = successTemplate.cloneNode(true);
       document.body.insertAdjacentElement('afterbegin', success);
-      document.addEventListener('click', function(evt) {
-        evt.preventDefault();
+      document.addEventListener('click', function (buttonEvt) {
+        buttonEvt.preventDefault();
         success.style = 'display: none;';
       });
-      document.addEventListener('keydown', function (evt) {
-        evt.preventDefault();
-        if (evt.keyCode === 27) {
+      document.addEventListener('keydown', function (newEvt) {
+        newEvt.preventDefault();
+        if (newEvt.keyCode === 27) {
           success.style = 'display: none;';
         }
       });
-      inactive();
     }, function () {
       var errorTemplate = document.querySelector('#error').content.querySelector('.error');
       var error = errorTemplate.cloneNode(true);
       document.querySelector('main').insertAdjacentElement('beforeend', error);
-      var errButton = error.querySelector('.error__button');
-      document.addEventListener('click', function(evt) {
-        evt.preventDefault();
+      //  var errButton = error.querySelector('.error__button');
+      document.addEventListener('click', function (errorEvt) {
+        errorEvt.preventDefault();
         error.style = 'display: none;';
       });
-      document.addEventListener('keydown', function (evt) {
-        evt.preventDefault();
-        if (evt.keyCode === 27) {
-          error.style = 'display: none;';
+      document.addEventListener('keydown', function (errEvt) {
+        errEvt.preventDefault();
+        if (errEvt.keyCode === 27) {
+          errEvt.style = 'display: none;';
         }
       });
     });
@@ -251,15 +237,11 @@
   });
 
 
-
   var clearButton = form.querySelector('.ad-form__reset');
   clearButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     clear();
   });
-
-
-
 
   window.form = {
     getAddress: getAddress,
