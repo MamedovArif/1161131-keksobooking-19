@@ -108,11 +108,11 @@
     form.querySelector('textarea').value = '';
     inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
     // положить главную метку на место после отправки
-    //window.map.mainPin.clientX = initialCoorX;
-    //window.map.mainPin.clientY = initialCoorY;
+    window.map.mainPin.style.top = initialCoorY;
+    window.map.mainPin.left = initialCoorX;
   };
 
-  // получаем живую коллекцию меток
+  // получаем живую коллекцию меток, хотя это и противоречит критериям
   var mapPin = window.map.mapPins.getElementsByClassName('map__pin');
 
   var clearPins = function () {
