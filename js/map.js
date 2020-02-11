@@ -15,17 +15,20 @@
     return pin;
   };
 
-  var fragment2 = document.createDocumentFragment();
-  for (var i = 0; i < window.arrayOfAds.length; i++) {
+
+ // for (var i = 0; i < window.arrayOfAds.length; i++) {
     //  fragment.appendChild(renderPin(window.arrayOfAds[i]));
-    fragment2.appendChild(window.card.renderCard(window.arrayOfAds[i]));
-  }
+   // fragment2.appendChild(window.card.renderCard(window.arrayOfAds[i]));
+
 
   var fragment = document.createDocumentFragment();
+  var fragment2 = document.createDocumentFragment();
 
   var successHandler = function (pins) {
-    for (var k = 1; k <= 8; k++) {
+    console.log(pins);
+    for (var k = 0; k < 8; k++) {
       fragment.appendChild(renderPin(pins[k]));
+      fragment2.appendChild(window.card.renderCard(pins[k]));
     }
   };
 

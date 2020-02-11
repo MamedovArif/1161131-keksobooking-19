@@ -104,12 +104,15 @@
     for (var h = 0; h < selects.length; h++) {
       selects[h].selectedIndex = 0;
     }
-    form.querySelector('textarea').value = ' ';
     typeHousing.selectedIndex = 1;
+    form.querySelector('textarea').value = '';
     inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
+    // положить главную метку на место после отправки
+    //window.map.mainPin.clientX = initialCoorX;
+    //window.map.mainPin.clientY = initialCoorY;
   };
 
-
+  // получаем живую коллекцию меток
   var mapPin = window.map.mapPins.getElementsByClassName('map__pin');
 
   var clearPins = function () {
@@ -147,12 +150,15 @@
 
     var adCards = window.map.mapPins.querySelectorAll('.map__card');
     var labels = window.map.mapPins.querySelectorAll('.map__pin');
-
+    // скрываем карточки объявлений
     for (var u = 0; u < adCards.length; u++) {
       adCards[u].hidden = true;
     }
     var addLabelClickHandler = function (label, card) {
       label.addEventListener('click', function () {
+        for (var i = 1; i < labels.length; i++) {
+          adCards[i-1].hidden = true;
+        }
         card.hidden = false;
         var adClose = card.querySelector('.popup__close');
         adClose.addEventListener('click', function () {
@@ -169,7 +175,6 @@
     for (var r = 1; r < labels.length; r++) {
       addLabelClickHandler(labels[r], adCards[r - 1]);
     }
-
   };
 
   inactive();
@@ -200,39 +205,42 @@
 
   inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
 
+  var successUpload = function () {
+    inactive();
+    var successTemplate = document.querySelector('#success').
+      content.querySelector('.success');
+    var success = successTemplate.cloneNode(true);
+    document.body.insertAdjacentElement('afterbegin', success);
+    document.addEventListener('click', function (buttonEvt) {
+      buttonEvt.preventDefault();
+      success.style = 'display: none;';
+    });
+    document.addEventListener('keydown', function (newEvt) {
+      newEvt.preventDefault();
+      if (newEvt.keyCode === 27) {
+        success.style = 'display: none;';
+      }
+    });
+  }
+
+  var unsuccessUpload = function () {
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var error = errorTemplate.cloneNode(true);
+    document.querySelector('main').insertAdjacentElement('beforeend', error);
+    document.addEventListener('click', function (errorEvt) {
+      errorEvt.preventDefault();
+      error.style = 'display: none;';
+    });
+    document.addEventListener('keydown', function (errEvt) {
+      errEvt.preventDefault();
+      if (errEvt.keyCode === 27) {
+        errEvt.style = 'display: none;';
+      }
+    });
+  }
 
   form.addEventListener('submit', function (evt) {
-    window.server.upload(new FormData(form), function () {
-      inactive();
-      var successTemplate = document.querySelector('#success').content.querySelector('.success');
-      var success = successTemplate.cloneNode(true);
-      document.body.insertAdjacentElement('afterbegin', success);
-      document.addEventListener('click', function (buttonEvt) {
-        buttonEvt.preventDefault();
-        success.style = 'display: none;';
-      });
-      document.addEventListener('keydown', function (newEvt) {
-        newEvt.preventDefault();
-        if (newEvt.keyCode === 27) {
-          success.style = 'display: none;';
-        }
-      });
-    }, function () {
-      var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-      var error = errorTemplate.cloneNode(true);
-      document.querySelector('main').insertAdjacentElement('beforeend', error);
-      //  var errButton = error.querySelector('.error__button');
-      document.addEventListener('click', function (errorEvt) {
-        errorEvt.preventDefault();
-        error.style = 'display: none;';
-      });
-      document.addEventListener('keydown', function (errEvt) {
-        errEvt.preventDefault();
-        if (errEvt.keyCode === 27) {
-          errEvt.style = 'display: none;';
-        }
-      });
-    });
+    window.server.upload(new FormData(form), successUpload, unsuccessUpload);
     evt.preventDefault();
   });
 
