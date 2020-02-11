@@ -79,6 +79,7 @@
     }
   });
 
+
   var addDisable = function (arr) {
     for (var j = 0; j < arr.length; j++) {
       arr[j].disabled = true;
@@ -92,10 +93,13 @@
   };
 
     var clear = function () {
-    var inputs = form.querySelectorAll('input');
-    for (var i = 0; i < inputs.length; i++) {
-      inputs[i].value = '';
+    form.querySelector('input[name = title]').value = '';
+    pricePerNight.value = null;
+    var features = form.querySelectorAll('input[name = features]');
+    for (var q = 0; q < features.length; q++) {
+      features[q].checked = false;
     }
+
     var selects = form.querySelectorAll('select');
     for (var h = 0; h < selects.length; h++) {
       selects[h].selectedIndex = 0;
@@ -110,13 +114,28 @@
     }
   };
 
+
+  var mapPin = window.map.mapPins.getElementsByClassName('map__pin');
+
+  var clearPins = function () {
+    for (var e = 1; e < mapPin.length; e++) {
+      mapPin[e].classList.add('hidden');
+    }
+  };
+
+  var createPins = function () {
+    for (var d = 1; d < mapPin.length; d++) {
+      mapPin[d].classList.remove('hidden');
+    };
+  }
+
   var inactive = function () {
-    window.map.map.classList.add('map--faded');
-    addDisable(formInputs);
-    addDisable(mapFilters);
-    mapFeatures.disabled = true;
-    inputAddress.value = '';
     clear();
+    clearPins();
+    addDisable(formInputs);
+    mapFeatures.disabled = true;
+    addDisable(mapFilters);
+    window.map.map.classList.add('map--faded');
   };
 
   var activation = function () {
@@ -125,6 +144,7 @@
     removeDisable(formInputs);
     removeDisable(mapFilters);
     mapFeatures.disabled = false;
+    createPins();
 
     window.map.mapPins.appendChild(window.map.fragment2);
     // mapChildFilters.insertAdjacentHTML('beforebegin', window.map.fragment2);
