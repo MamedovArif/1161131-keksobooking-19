@@ -15,13 +15,33 @@
     return pin;
   };
 
-  var fragment = document.createDocumentFragment();
   var fragment2 = document.createDocumentFragment();
   for (var i = 0; i < window.arrayOfAds.length; i++) {
-    fragment.appendChild(renderPin(window.arrayOfAds[i]));
-    //  console.log(renderCard(arrayOfAds[i]));
+    //  fragment.appendChild(renderPin(window.arrayOfAds[i]));
     fragment2.appendChild(window.card.renderCard(window.arrayOfAds[i]));
   }
+
+  var fragment = document.createDocumentFragment();
+
+  var successHandler = function (pins) {
+    for (var k = 1; k <= 8; k = k + 1) {
+      fragment.appendChild(renderPin(pins[k]));
+    }
+  };
+
+  var errorHandler = function (error) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = error;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.server.load(successHandler, errorHandler);
 
   window.map = {
     map: map,
