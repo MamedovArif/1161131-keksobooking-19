@@ -1,9 +1,8 @@
 'use strict';
 (function () {
-  var title = window.map.mapPins.querySelector('.map__title');
   var TOP_LIMIT = 130;
   var BOTTOM_LIMIT = 630;
-  console.log(title);
+
   var limits = {
     top: window.map.mapPins.offsetTop + TOP_LIMIT,
     bottom: window.map.mapPins.offsetTop + BOTTOM_LIMIT,
@@ -11,10 +10,6 @@
     right: window.map.mapPins.offsetLeft + window.map.mapPins.offsetWidth -
      window.map.mainPin.offsetWidth / 2,
   };
-  console.log(window.map.mapPins.offsetWidth);
-  console.log(window.map.mapPins.offsetLeft);
-  console.log(window.map.mainPin.offsetHeight);
-
 
   window.map.mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -40,12 +35,12 @@
         y: moveEvt.clientY
       };
 
-      if ((window.map.mainPin.offsetTop - shift.y) < limits.top )  {
+      if ((window.map.mainPin.offsetTop - shift.y) < limits.top) {
         window.map.mainPin.style.top = limits.top + 'px';
-      } else if((window.map.mainPin.offsetTop - shift.y) > limits.bottom ) {
+      } else if ((window.map.mainPin.offsetTop - shift.y) > limits.bottom) {
         window.map.mainPin.style.top = limits.bottom + 'px';
       } else {
-      window.map.mainPin.style.top = (window.map.mainPin.offsetTop - shift.y) + 'px';
+        window.map.mainPin.style.top = (window.map.mainPin.offsetTop - shift.y) + 'px';
       }
 
       if ((window.map.mainPin.offsetLeft - shift.x) < limits.left) {
@@ -70,7 +65,7 @@
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
-          window.map.mainPin.removeEventListener('click', onClickPreventDefault)
+          window.map.mainPin.removeEventListener('click', onClickPreventDefault);
         };
         window.map.mainPin.addEventListener('click', onClickPreventDefault);
       }

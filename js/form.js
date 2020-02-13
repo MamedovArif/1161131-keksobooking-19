@@ -157,7 +157,7 @@
     var addLabelClickHandler = function (label, card) {
       label.addEventListener('click', function () {
         for (var i = 1; i < labels.length; i++) {
-          adCards[i-1].hidden = true;
+          adCards[i - 1].hidden = true;
         }
         card.hidden = false;
         var adClose = card.querySelector('.popup__close');
@@ -221,7 +221,7 @@
         success.style = 'display: none;';
       }
     });
-  }
+  };
 
   var unsuccessUpload = function () {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -237,7 +237,7 @@
         errEvt.style = 'display: none;';
       }
     });
-  }
+  };
 
   form.addEventListener('submit', function (evt) {
     window.server.upload(new FormData(form), successUpload, unsuccessUpload);
