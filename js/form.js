@@ -79,14 +79,12 @@
     }
   });
 
+
   var addDisable = function (arr) {
     for (var j = 0; j < arr.length; j++) {
       arr[j].disabled = true;
     }
   };
-  addDisable(formInputs);
-  addDisable(mapFilters);
-  mapFeatures.disabled = true;
 
   var removeDisable = function (arr) {
     for (var y = 0; y < arr.length; y++) {
@@ -94,11 +92,57 @@
     }
   };
 
+  var clear = function () {
+    form.querySelector('input[name = title]').value = '';
+    pricePerNight.value = null;
+    var features = form.querySelectorAll('input[name = features]');
+    for (var q = 0; q < features.length; q++) {
+      features[q].checked = false;
+    }
+
+    var selects = form.querySelectorAll('select');
+    for (var h = 0; h < selects.length; h++) {
+      selects[h].selectedIndex = 0;
+    }
+    typeHousing.selectedIndex = 1;
+    form.querySelector('textarea').value = '';
+    inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
+    // положить главную метку на место после отправки
+    window.map.mainPin.style.top = initialCoorY;
+    window.map.mainPin.left = initialCoorX;
+  };
+
+  // получаем живую коллекцию меток, хотя это и противоречит критериям
+  var mapPin = window.map.mapPins.getElementsByClassName('map__pin');
+
+  var clearPins = function () {
+    for (var e = 1; e < mapPin.length; e++) {
+      mapPin[e].classList.add('hidden');
+    }
+  };
+
+  var showPins = function () {
+    for (var d = 1; d < mapPin.length; d++) {
+      mapPin[d].classList.remove('hidden');
+    }
+  };
+
+  var inactive = function () {
+    clear();
+    clearPins();
+    addDisable(formInputs);
+    mapFeatures.disabled = true;
+    addDisable(mapFilters);
+    window.map.map.classList.add('map--faded');
+  };
+
   var activation = function () {
     window.map.mapPins.appendChild(window.map.fragment);
     window.map.map.classList.remove('map--faded');
     removeDisable(formInputs);
     removeDisable(mapFilters);
+    mapFeatures.disabled = false;
+    showPins();
 
     window.map.mapPins.appendChild(window.map.fragment2);
     // mapChildFilters.insertAdjacentHTML('beforebegin', window.map.fragment2);
@@ -106,12 +150,15 @@
 
     var adCards = window.map.mapPins.querySelectorAll('.map__card');
     var labels = window.map.mapPins.querySelectorAll('.map__pin');
-
+    // скрываем карточки объявлений
     for (var u = 0; u < adCards.length; u++) {
       adCards[u].hidden = true;
     }
     var addLabelClickHandler = function (label, card) {
       label.addEventListener('click', function () {
+        for (var i = 1; i < labels.length; i++) {
+          adCards[i - 1].hidden = true;
+        }
         card.hidden = false;
         var adClose = card.querySelector('.popup__close');
         adClose.addEventListener('click', function () {
@@ -128,16 +175,9 @@
     for (var r = 1; r < labels.length; r++) {
       addLabelClickHandler(labels[r], adCards[r - 1]);
     }
-    /*
-    labels[1].addEventListener('click', function() {
-      adCards[0].hidden = false;
-      var adClose = adCards[0].querySelector('.popup__close');
-      adClose.addEventListener('click', function() {
-        adCards[0].hidden = true;
-      });
-    }); */
-
   };
+
+  inactive();
 
   var INITIAL_SIZE_PIN = 200;
   var SIZE_PIN = 65;
@@ -165,10 +205,57 @@
 
   inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
 
+  var successUpload = function () {
+    inactive();
+    var successTemplate = document.querySelector('#success').
+      content.querySelector('.success');
+    var success = successTemplate.cloneNode(true);
+    document.body.insertAdjacentElement('afterbegin', success);
+    document.addEventListener('click', function (buttonEvt) {
+      buttonEvt.preventDefault();
+      success.style = 'display: none;';
+    });
+    document.addEventListener('keydown', function (newEvt) {
+      newEvt.preventDefault();
+      if (newEvt.keyCode === 27) {
+        success.style = 'display: none;';
+      }
+    });
+  };
+
+  var unsuccessUpload = function () {
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var error = errorTemplate.cloneNode(true);
+    document.querySelector('main').insertAdjacentElement('beforeend', error);
+    document.addEventListener('click', function (errorEvt) {
+      errorEvt.preventDefault();
+      error.style = 'display: none;';
+    });
+    document.addEventListener('keydown', function (errEvt) {
+      errEvt.preventDefault();
+      if (errEvt.keyCode === 27) {
+        errEvt.style = 'display: none;';
+      }
+    });
+  };
+
+  form.addEventListener('submit', function (evt) {
+    window.server.upload(new FormData(form), successUpload, unsuccessUpload);
+    evt.preventDefault();
+  });
+
+
+  var clearButton = form.querySelector('.ad-form__reset');
+  clearButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    clear();
+  });
+
   window.form = {
     getAddress: getAddress,
     inputAddress: inputAddress,
     SIZE_PIN: SIZE_PIN,
     SHARP_END_Y: SHARP_END_Y
   };
+
 })();
