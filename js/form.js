@@ -1,9 +1,5 @@
 'use strict';
 (function () {
-  var mapChildFilters = window.map.map.querySelector('.map__filters-container');
-  var mapFilters = mapChildFilters.querySelectorAll('select');
-  var mapFeatures = mapChildFilters.querySelector('.map__features');
-
 
   var form = document.querySelector('.ad-form');
   var formInputs = form.querySelectorAll('fieldset');
@@ -86,12 +82,6 @@
     }
   };
 
-  var removeDisable = function (arr) {
-    for (var y = 0; y < arr.length; y++) {
-      arr[y].disabled = false;
-    }
-  };
-
   var clear = function () {
     form.querySelector('input[name = title]').value = '';
     pricePerNight.value = null;
@@ -131,17 +121,16 @@
     clear();
     clearPins();
     addDisable(formInputs);
-    mapFeatures.disabled = true;
-    addDisable(mapFilters);
+    window.map.mapFeatures.disabled = true;
+    addDisable(window.map.mapFilters);
     window.map.map.classList.add('map--faded');
   };
 
   var activation = function () {
     window.map.mapPins.appendChild(window.map.fragment);
     window.map.map.classList.remove('map--faded');
-    removeDisable(formInputs);
-    removeDisable(mapFilters);
-    mapFeatures.disabled = false;
+    window.map.removeDisable(formInputs);
+
     showPins();
 
     window.map.mapPins.appendChild(window.map.fragment2);

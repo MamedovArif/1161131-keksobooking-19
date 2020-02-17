@@ -5,6 +5,36 @@
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mainPin = mapPins.querySelector('.map__pin--main');
 
+  var mapChildFilters = map.querySelector('.map__filters-container');
+  var mapFilters = mapChildFilters.querySelectorAll('select');
+  var mapFeatures = mapChildFilters.querySelector('.map__features');
+  var habitationType = mapChildFilters.querySelector('select[name = housing-type]');
+
+
+  var ads = [];
+  var ftr = [];
+  habitationType.addEventListener('change', function() {
+
+    if (habitationType.value === 'flat') {
+      ftr = ads.filter((item) => {
+      return item.offer.type === 'flat';
+      });
+    }
+    if (habitationType.value === 'bungalo') {
+      ftr = ads.filter((item) => {
+      return item.offer.type === 'bungalo';
+      });
+    }
+    console.log(ftr);
+  });
+
+
+  var removeDisable = function (arr) {
+    for (var y = 0; y < arr.length; y++) {
+      arr[y].disabled = false;
+    }
+  };
+
   var renderPin = function (ad) {
     var pin = pinTemplate.cloneNode(true);
     pin.style.left = (ad.location.x - 25) + 'px';
@@ -19,10 +49,14 @@
   var fragment2 = document.createDocumentFragment();
 
   var successHandler = function (pins) {
-    for (var k = 0; k < 8; k++) {
+    console.log(pins);
+    ads = pins;
+    for (var k = 0; k < 10; k++) {
       fragment.appendChild(renderPin(pins[k]));
       fragment2.appendChild(window.card.renderCard(pins[k]));
     }
+    removeDisable(mapFilters);
+    mapFeatures.disabled = false;
   };
 
   var errorHandler = function (error) {
@@ -44,7 +78,10 @@
     mapPins: mapPins,
     fragment: fragment,
     fragment2: fragment2,
-    mainPin: mainPin
+    mainPin: mainPin,
+    mapFeatures: mapFeatures,
+    removeDisable: removeDisable,
+    mapFilters: mapFilters
   };
 
 })();
