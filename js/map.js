@@ -10,22 +10,50 @@
   var mapFeatures = mapChildFilters.querySelector('.map__features');
   var habitationType = mapChildFilters.querySelector('select[name = housing-type]');
 
+  // получаем живую коллекцию меток, хотя это и противоречит критериям
+  var mapPin = mapPins.getElementsByClassName('map__pin');
+  var adCards = mapPins.getElementsByClassName('map__card');
+  console.log(adCards);
 
-  var ads = [];
   var ftr = [];
+  var ads = [];
   habitationType.addEventListener('change', function() {
+    for (var e = mapPin.length - 1; e >= 1; e--) {
+      mapPin[e].remove();
+    }
+    for (var y = 0; y < adCards.length; y++) {
+      adCards[y].remove();
+    }
 
     if (habitationType.value === 'flat') {
       ftr = ads.filter((item) => {
-      return item.offer.type === 'flat';
+        return item.offer.type === 'flat';
       });
+    } else if (habitationType.value === 'bungalo') {
+        ftr = ads.filter((item) => {
+          return item.offer.type === 'bungalo';
+        });
+    } else if (habitationType.value === 'palace') {
+        ftr = ads.filter((item) => {
+          return item.offer.type === 'palace';
+        });
+    } else if (habitationType.value === 'house') {
+        ftr = ads.filter((item) => {
+          return item.offer.type === 'house';
+        });
+    } else if (habitationType.value === 'any') {
+        ftr = ads.filter((item) => {
+          return item;
+        });
     }
-    if (habitationType.value === 'bungalo') {
-      ftr = ads.filter((item) => {
-      return item.offer.type === 'bungalo';
-      });
+    var fragmentPin = document.createDocumentFragment();
+    var fragmentCard = document.createDocumentFragment();
+    for (var k = 0; k < ftr.length; k++) {
+      fragmentPin.appendChild(renderPin(ftr[k]));
+      fragmentCard.appendChild(window.card.renderCard(ftr[k]));
     }
-    console.log(ftr);
+    mapPins.appendChild(fragmentPin);
+    mapPins.appendChild(fragmentCard);
   });
 
 
@@ -49,7 +77,6 @@
   var fragment2 = document.createDocumentFragment();
 
   var successHandler = function (pins) {
-    console.log(pins);
     ads = pins;
     for (var k = 0; k < 10; k++) {
       fragment.appendChild(renderPin(pins[k]));
@@ -81,7 +108,8 @@
     mainPin: mainPin,
     mapFeatures: mapFeatures,
     removeDisable: removeDisable,
-    mapFilters: mapFilters
+    mapFilters: mapFilters,
+    mapPin: mapPin
   };
 
 })();

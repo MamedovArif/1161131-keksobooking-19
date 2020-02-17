@@ -102,18 +102,17 @@
     window.map.mainPin.left = initialCoorX;
   };
 
-  // получаем живую коллекцию меток, хотя это и противоречит критериям
-  var mapPin = window.map.mapPins.getElementsByClassName('map__pin');
+
 
   var clearPins = function () {
-    for (var e = 1; e < mapPin.length; e++) {
-      mapPin[e].classList.add('hidden');
+    for (var e = 1; e < window.map.mapPin.length; e++) {
+      window.map.mapPin[e].classList.add('hidden');
     }
   };
 
   var showPins = function () {
-    for (var d = 1; d < mapPin.length; d++) {
-      mapPin[d].classList.remove('hidden');
+    for (var d = 1; d < window.map.mapPin.length; d++) {
+      window.map.mapPin[d].classList.remove('hidden');
     }
   };
 
