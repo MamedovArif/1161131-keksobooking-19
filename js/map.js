@@ -7,8 +7,13 @@
 
   var mapChildFilters = map.querySelector('.map__filters-container');
   var mapFilters = mapChildFilters.querySelectorAll('select');
+
   var mapFeatures = mapChildFilters.querySelector('.map__features');
+  var inputFeatures = mapFeatures.getElementsByClassName('map__checkbox');
   var habitationType = mapChildFilters.querySelector('select[name = housing-type]');
+  var fieldPrice = mapChildFilters.querySelector('select[name = housing-price]');
+  var fieldRooms = mapChildFilters.querySelector('select[name = housing-rooms]');
+  var fieldGuests = mapChildFilters.querySelector('select[name = housing-guests]');
 
   var functionalCard = function () {
     var adCards = window.map.mapPins.querySelectorAll('.map__card');
@@ -43,51 +48,140 @@
   var mapPin = mapPins.getElementsByClassName('map__pin');
   var adCards = mapPins.getElementsByClassName('map__card');
 
-  var ftr = [];
   var ads = [];
-  habitationType.addEventListener('change', function () {
-    for (var e = mapPin.length - 1; e >= 1; e--) {
-      mapPin[e].remove();
+  var habitation = 'any';
+  var filterPrice = 'any';
+  var filterRooms = 'any';
+  var filterGuests = 'any';
+  var filterCheckbox = [];
+  var mass = [];
+
+  var filterArray = function () {
+    var sameHabitation;
+    if (habitation !== 'any') {
+      sameHabitation = ads.filter(function (item) {
+      return item.offer.type === habitation;
+    });
+    } else {
+      sameHabitation = ads;
     }
-    for (var y = 0; y < adCards.length; y++) {
-      adCards[y].remove();
+    var sameRooms;
+    if (filterRooms !== 'any') {
+      sameRooms = sameHabitation.filter(function (elem) {
+        return elem.offer.rooms === Number(filterRooms);
+      });
+    } else {
+      sameRooms = sameHabitation;
+    }
+    var sameGuests;
+    if (filterGuests !== 'any') {
+      sameGuests = sameRooms.filter(function (elem) {
+        return elem.offer.guests === Number(filterGuests);
+      });
+    } else {
+      sameGuests = sameRooms;
+    }
+    var samePrice;
+    if (filterPrice === 'low') {
+      samePrice = sameGuests.filter(function (elem) {
+        return elem.offer.price < 10000;
+      });
+    } else  if (filterPrice === 'middle') {
+      samePrice = sameGuests.filter(function (elem) {
+        return elem.offer.price < 50000 && elem.offer.price >= 10000;
+      });
+    } else if (filterPrice === 'high') {
+      samePrice = sameGuests.filter(function (elem) {
+        return elem.offer.price >= 50000;
+      });
+    } else if (filterPrice === 'any') {
+      samePrice = sameGuests;
     }
 
-    if (habitationType.value === 'flat') {
-      ftr = ads.filter(function (item) {
-        return item.offer.type === 'flat';
-      });
-    } else if (habitationType.value === 'bungalo') {
-      ftr = ads.filter(function (item) {
-        return item.offer.type === 'bungalo';
-      });
-    } else if (habitationType.value === 'palace') {
-      ftr = ads.filter(function (item) {
-        return item.offer.type === 'palace';
-      });
-    } else if (habitationType.value === 'house') {
-      ftr = ads.filter(function (item) {
-        return item.offer.type === 'house';
-      });
-    } else if (habitationType.value === 'any') {
-      ftr = ads.filter(function (item) {
-        return item;
-      });
+    console.log(filterCheckbox);
+    for (var i = 0; i < filterCheckbox.length; i++) {
+      if (filterCheckbox[i] === true) {
+        mass.push(inputFeatures[i].value)
+      }
     }
-    if (ftr.length > 5) {
-      ftr.length = 5;
+    var future = [];
+    if (mass.length !== 0) {
+
+      for (var key of samePrice) {
+        var acc = 0;
+        for (var prop of mass) {
+          if (key.offer.features.includes(prop)) {
+            acc += 1;
+          }
+        }
+        if (acc === mass.length) {
+          future.push(key);
+        }
+      }
+    } else {
+      future = samePrice;
+    }
+
+    console.log(future);
+    if (future.length > 5) {
+      future.length = 5;
     }
     var fragmentPin = document.createDocumentFragment();
     var fragmentCard = document.createDocumentFragment();
-    for (var k = 0; k < ftr.length; k++) {
-      fragmentPin.appendChild(renderPin(ftr[k]));
-      fragmentCard.appendChild(window.card.renderCard(ftr[k]));
+    for (var k = 0; k < future.length; k++) {
+      fragmentPin.appendChild(renderPin(future[k]));
+      fragmentCard.appendChild(window.card.renderCard(future[k]));
     }
     mapPins.appendChild(fragmentPin);
     mapPins.appendChild(fragmentCard);
     functionalCard();
-  });
+  }
 
+  var clearPinCard = function() {
+    for (var e = mapPin.length - 1; e >= 1; e--) {
+      mapPin[e].remove();
+    }
+    for (var y = adCards.length - 1; y >= 0; y--) {
+      adCards[y].remove();
+    }
+  }
+
+  habitationType.addEventListener('change', function () {
+    clearPinCard();
+    habitation = habitationType.value;
+    filterArray();
+  });
+  fieldRooms.addEventListener('change', function () {
+    clearPinCard();
+    filterRooms = fieldRooms.value;
+    console.log(filterRooms);
+    filterArray();
+  });
+  fieldGuests.addEventListener('change', function () {
+    clearPinCard();
+    filterGuests = fieldGuests.value;
+    filterArray();
+  });
+  fieldPrice.addEventListener('change', function () {
+    clearPinCard();
+    filterPrice = fieldPrice.value;
+    filterArray();
+  });
+  var callback = function (element) {
+    element.addEventListener('change', function () {
+      clearPinCard();
+      filterCheckbox = [];
+      mass = [];
+      for (var j = 0; j < inputFeatures.length; j++) {
+        filterCheckbox.push(inputFeatures[j].checked);
+      }
+      console.log(filterCheckbox);
+      filterArray();
+    });
+  }
+  for (var i = 0; i < inputFeatures.length; i++) { //повесили обработчик события
+    callback(inputFeatures[i]);                    // на каждый чекбокс
+  }
 
   var removeDisable = function (arr) {
     for (var y = 0; y < arr.length; y++) {
@@ -110,7 +204,8 @@
 
   var successHandler = function (pins) {
     ads = pins;
-    for (var k = 0; k < 10; k++) {
+    console.log(ads);
+    for (var k = 0; k < 5; k++) {
       fragment.appendChild(renderPin(pins[k]));
       fragment2.appendChild(window.card.renderCard(pins[k]));
     }
