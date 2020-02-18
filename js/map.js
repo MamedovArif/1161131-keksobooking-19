@@ -10,6 +10,35 @@
   var mapFeatures = mapChildFilters.querySelector('.map__features');
   var habitationType = mapChildFilters.querySelector('select[name = housing-type]');
 
+  var functionalCard = function () {
+    var adCards = window.map.mapPins.querySelectorAll('.map__card');
+    var labels = window.map.mapPins.querySelectorAll('.map__pin');
+    // скрываем карточки объявлений
+    for (var u = 0; u < adCards.length; u++) {
+      adCards[u].hidden = true;
+    }
+    var addLabelClickHandler = function (label, card) {
+      label.addEventListener('click', function () {
+        for (var i = 1; i < labels.length; i++) {
+          adCards[i - 1].hidden = true;
+        }
+        card.hidden = false;
+        var adClose = card.querySelector('.popup__close');
+        adClose.addEventListener('click', function () {
+          card.hidden = true;
+        });
+        document.addEventListener('keydown', function (evt) {
+          if (evt.keyCode === 27) {
+            card.hidden = true;
+          }
+        });
+      });
+    };
+    for (var r = 1; r < labels.length; r++) {
+      addLabelClickHandler(labels[r], adCards[r - 1]);
+    }
+  }
+
   // получаем живую коллекцию меток, хотя это и противоречит критериям
   var mapPin = mapPins.getElementsByClassName('map__pin');
   var adCards = mapPins.getElementsByClassName('map__card');
@@ -54,6 +83,7 @@
     }
     mapPins.appendChild(fragmentPin);
     mapPins.appendChild(fragmentCard);
+    functionalCard();
   });
 
 
@@ -109,7 +139,8 @@
     mapFeatures: mapFeatures,
     removeDisable: removeDisable,
     mapFilters: mapFilters,
-    mapPin: mapPin
+    mapPin: mapPin,
+    functionalCard: functionalCard
   };
 
 })();

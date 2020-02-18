@@ -129,40 +129,9 @@
     window.map.mapPins.appendChild(window.map.fragment);
     window.map.map.classList.remove('map--faded');
     window.map.removeDisable(formInputs);
-
     showPins();
-
     window.map.mapPins.appendChild(window.map.fragment2);
-    // mapChildFilters.insertAdjacentHTML('beforebegin', window.map.fragment2);
-
-
-    var adCards = window.map.mapPins.querySelectorAll('.map__card');
-    var labels = window.map.mapPins.querySelectorAll('.map__pin');
-    // скрываем карточки объявлений
-    for (var u = 0; u < adCards.length; u++) {
-      adCards[u].hidden = true;
-    }
-    var addLabelClickHandler = function (label, card) {
-      label.addEventListener('click', function () {
-        for (var i = 1; i < labels.length; i++) {
-          adCards[i - 1].hidden = true;
-        }
-        card.hidden = false;
-        var adClose = card.querySelector('.popup__close');
-        adClose.addEventListener('click', function () {
-          card.hidden = true;
-        });
-        document.addEventListener('keydown', function (evt) {
-          if (evt.keyCode === 27) {
-            card.hidden = true;
-          }
-        });
-      });
-    };
-
-    for (var r = 1; r < labels.length; r++) {
-      addLabelClickHandler(labels[r], adCards[r - 1]);
-    }
+    window.map.functionalCard();
   };
 
   inactive();
