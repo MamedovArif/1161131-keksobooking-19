@@ -103,7 +103,6 @@
   };
 
 
-
   var clearPins = function () {
     for (var e = 1; e < window.map.mapPin.length; e++) {
       window.map.mapPin[e].classList.add('hidden');

@@ -37,16 +37,15 @@
     for (var r = 1; r < labels.length; r++) {
       addLabelClickHandler(labels[r], adCards[r - 1]);
     }
-  }
+  };
 
   // получаем живую коллекцию меток, хотя это и противоречит критериям
   var mapPin = mapPins.getElementsByClassName('map__pin');
   var adCards = mapPins.getElementsByClassName('map__card');
-  console.log(adCards);
 
   var ftr = [];
   var ads = [];
-  habitationType.addEventListener('change', function() {
+  habitationType.addEventListener('change', function () {
     for (var e = mapPin.length - 1; e >= 1; e--) {
       mapPin[e].remove();
     }
@@ -55,25 +54,28 @@
     }
 
     if (habitationType.value === 'flat') {
-      ftr = ads.filter((item) => {
+      ftr = ads.filter(function (item) {
         return item.offer.type === 'flat';
       });
     } else if (habitationType.value === 'bungalo') {
-        ftr = ads.filter((item) => {
-          return item.offer.type === 'bungalo';
-        });
+      ftr = ads.filter(function (item) {
+        return item.offer.type === 'bungalo';
+      });
     } else if (habitationType.value === 'palace') {
-        ftr = ads.filter((item) => {
-          return item.offer.type === 'palace';
-        });
+      ftr = ads.filter(function (item) {
+        return item.offer.type === 'palace';
+      });
     } else if (habitationType.value === 'house') {
-        ftr = ads.filter((item) => {
-          return item.offer.type === 'house';
-        });
+      ftr = ads.filter(function (item) {
+        return item.offer.type === 'house';
+      });
     } else if (habitationType.value === 'any') {
-        ftr = ads.filter((item) => {
-          return item;
-        });
+      ftr = ads.filter(function (item) {
+        return item;
+      });
+    }
+    if (ftr.length > 5) {
+      ftr.length = 5;
     }
     var fragmentPin = document.createDocumentFragment();
     var fragmentCard = document.createDocumentFragment();
