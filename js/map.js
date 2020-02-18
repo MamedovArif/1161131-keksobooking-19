@@ -98,16 +98,16 @@
       samePrice = sameGuests;
     }
 
-    console.log(filterCheckbox);
+    console.log(filterCheckbox);// труфoлсная форма features
     for (var i = 0; i < filterCheckbox.length; i++) {
       if (filterCheckbox[i] === true) {
-        mass.push(inputFeatures[i].value)
+        mass.push(inputFeatures[i].value);//mass - словесная форма features
       }
     }
-    var future = [];
+    var future = []; //конечный массив
     if (mass.length !== 0) {
 
-      for (var key of samePrice) {
+      for (var key of samePrice) { //нахождение пересечений
         var acc = 0;
         for (var prop of mass) {
           if (key.offer.features.includes(prop)) {
@@ -149,23 +149,31 @@
   habitationType.addEventListener('change', function () {
     clearPinCard();
     habitation = habitationType.value;
-    filterArray();
+    window.setTimeout(function () {
+      filterArray();
+    }, 500);
   });
   fieldRooms.addEventListener('change', function () {
     clearPinCard();
     filterRooms = fieldRooms.value;
     console.log(filterRooms);
-    filterArray();
+    window.setTimeout(function () {
+      filterArray();
+    }, 500);
   });
   fieldGuests.addEventListener('change', function () {
     clearPinCard();
     filterGuests = fieldGuests.value;
-    filterArray();
+    window.setTimeout(function () {
+      filterArray();
+    }, 500);
   });
   fieldPrice.addEventListener('change', function () {
     clearPinCard();
     filterPrice = fieldPrice.value;
-    filterArray();
+    window.setTimeout(function () {
+      filterArray();
+    }, 500);
   });
   var callback = function (element) {
     element.addEventListener('change', function () {
@@ -176,7 +184,9 @@
         filterCheckbox.push(inputFeatures[j].checked);
       }
       console.log(filterCheckbox);
+      window.setTimeout(function () {
       filterArray();
+    }, 500);
     });
   }
   for (var i = 0; i < inputFeatures.length; i++) { //повесили обработчик события
