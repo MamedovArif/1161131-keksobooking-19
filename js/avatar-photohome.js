@@ -23,9 +23,33 @@
         avatarUser.src = reader.result;
       });
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(avatar);
     }
-  })
+  });
 
 
+  var choosePhoto = window.form.form.
+  querySelector('.ad-form__upload input[type=file]');
+
+  var habitationPhoto = window.form.form.
+  querySelector('.ad-form__photo img');
+
+  choosePhoto.addEventListener('change', function () {
+    var home = choosePhoto.files[0];
+    var homeName = home.name.toLowerCase();
+
+    var barrier2 = FILE_TYPES.some(function (item) {
+      return homeName.endsWith(item);
+    });
+
+    if (barrier2) {
+      var reader2 = new FileReader();
+
+      reader2.addEventListener('load', function () {
+        habitationPhoto.src = reader2.result;
+      });
+
+      reader2.readAsDataURL(home);
+    }
+  });
 })();
