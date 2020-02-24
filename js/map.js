@@ -6,10 +6,13 @@
   var mainPin = mapPins.querySelector('.map__pin--main');
 
   var mapChildFilters = map.querySelector('.map__filters-container');
-  var mapFilters = mapChildFilters.querySelectorAll('select');
 
-  var mapFeatures = mapChildFilters.querySelector('.map__features');
-  var inputFeatures = mapFeatures.getElementsByClassName('map__checkbox');
+
+  var mapFeatures = mapChildFilters.querySelector('.map__features')
+  var inputFeatures = mapFeatures.children;
+  inputFeatures = Array.from(inputFeatures).filter(function(item, index) {
+    return item.type === 'checkbox';
+  });
   var habitationType = mapChildFilters.querySelector('select[name = housing-type]');
   var fieldPrice = mapChildFilters.querySelector('select[name = housing-price]');
   var fieldRooms = mapChildFilters.querySelector('select[name = housing-rooms]');
@@ -45,7 +48,15 @@
   };
 
   // получаем живую коллекцию меток, хотя это и противоречит критериям
-  var mapPin = mapPins.getElementsByClassName('map__pin');
+  var mapPin = mapPins.getElementsByClassName('map__pins');
+  console.log(mapPin);
+  // mapPin = Array.from(mapPin).filter(function(item) {
+  //   return item.type === 'button';
+  // });
+  // document.addEventListener('click', function() {
+  //   console.log(mapPin);
+  // });
+
   var adCards = mapPins.getElementsByClassName('map__card');
 
   var ads = [];
@@ -104,10 +115,10 @@
         mass.push(inputFeatures[i].value);//mass - словесная форма features
       }
     }
-    var future = []; //конечный массив
+    var future = [];  // конечный массив
     if (mass.length !== 0) {
-
-      for (var key of samePrice) { //нахождение пересечений
+      // нахождение пересечений
+      for (var key of samePrice) {
         var acc = 0;
         for (var prop of mass) {
           if (key.offer.features.includes(prop)) {
@@ -193,12 +204,6 @@
     callback(inputFeatures[i]);                    // на каждый чекбокс
   }
 
-  var removeDisable = function (arr) {
-    for (var y = 0; y < arr.length; y++) {
-      arr[y].disabled = false;
-    }
-  };
-
   var renderPin = function (ad) {
     var pin = pinTemplate.cloneNode(true);
     pin.style.left = (ad.location.x - 25) + 'px';
@@ -215,12 +220,10 @@
   var successHandler = function (pins) {
     ads = pins;
     console.log(ads);
-    for (var k = 0; k < 5; k++) {
+    for (var k = 0; k < 5; k++) {//кол-во элемнтов в мешках
       fragment.appendChild(renderPin(pins[k]));
       fragment2.appendChild(window.card.renderCard(pins[k]));
     }
-    removeDisable(mapFilters);
-    mapFeatures.disabled = false;
   };
 
   var errorHandler = function (error) {
@@ -244,8 +247,7 @@
     fragment2: fragment2,
     mainPin: mainPin,
     mapFeatures: mapFeatures,
-    removeDisable: removeDisable,
-    mapFilters: mapFilters,
+    mapChildFilters: mapChildFilters,
     mapPin: mapPin,
     functionalCard: functionalCard
   };
