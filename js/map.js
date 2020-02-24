@@ -9,18 +9,15 @@
 
 
   var mapFeatures = mapChildFilters.querySelector('.map__features')
-  var inputFeatures = mapFeatures.children;
-  inputFeatures = Array.from(inputFeatures).filter(function(item, index) {
-    return item.type === 'checkbox';
-  });
+  var inputFeatures = mapFeatures.querySelectorAll('input[name = features]');
   var habitationType = mapChildFilters.querySelector('select[name = housing-type]');
   var fieldPrice = mapChildFilters.querySelector('select[name = housing-price]');
   var fieldRooms = mapChildFilters.querySelector('select[name = housing-rooms]');
   var fieldGuests = mapChildFilters.querySelector('select[name = housing-guests]');
 
   var functionalCard = function () {
-    var adCards = window.map.mapPins.querySelectorAll('.map__card');
-    var labels = window.map.mapPins.querySelectorAll('.map__pin');
+    var adCards = mapPins.querySelectorAll('.map__card');
+    var labels = mapPins.querySelectorAll('.map__pin');
     // скрываем карточки объявлений
     for (var u = 0; u < adCards.length; u++) {
       adCards[u].hidden = true;
@@ -46,18 +43,6 @@
       addLabelClickHandler(labels[r], adCards[r - 1]);
     }
   };
-
-  // получаем живую коллекцию меток, хотя это и противоречит критериям
-  var mapPin = mapPins.getElementsByClassName('map__pins');
-  console.log(mapPin);
-  // mapPin = Array.from(mapPin).filter(function(item) {
-  //   return item.type === 'button';
-  // });
-  // document.addEventListener('click', function() {
-  //   console.log(mapPin);
-  // });
-
-  var adCards = mapPins.getElementsByClassName('map__card');
 
   var ads = [];
   var habitation = 'any';
@@ -148,7 +133,12 @@
     functionalCard();
   }
 
+  var mapPin = mapPins.querySelectorAll('.map__pin');
+
   var clearPinCard = function() {
+    var adCards = mapPins.querySelectorAll('.map__card');
+    mapPin = mapPins.querySelectorAll('.map__pin');
+
     for (var e = mapPin.length - 1; e >= 1; e--) {
       mapPin[e].remove();
     }

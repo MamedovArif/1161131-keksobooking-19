@@ -105,6 +105,10 @@
     // положить главную метку на место после отправки
     window.map.mainPin.style.top = initialCoorY;
     window.map.mainPin.left = initialCoorX;
+    var preview = form.querySelector('.ad-form-header__preview img');
+    preview.src = 'img/muffin-grey.svg';
+    var home = form.querySelector('.ad-form__photo img');
+    home.src = 'img/map.jpg';
   };
 
 
@@ -178,7 +182,7 @@
     var successTemplate = document.querySelector('#success').
       content.querySelector('.success');
     var success = successTemplate.cloneNode(true);
-    document.body.insertAdjacentElement('afterbegin', success);
+    document.querySelector('main').insertAdjacentElement('afterbegin', success);
     document.addEventListener('click', function (buttonEvt) {
       buttonEvt.preventDefault();
       success.style = 'display: none;';
