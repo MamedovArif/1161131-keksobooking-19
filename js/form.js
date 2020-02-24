@@ -87,7 +87,8 @@
     }
   };
 
-  var clear = function () {
+
+  var clearForm = function () {
     form.querySelector('input[name = title]').value = '';
     pricePerNight.value = null;
     var features = form.querySelectorAll('input[name = features]');
@@ -104,19 +105,24 @@
     inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
     // положить главную метку на место после отправки
     window.map.mainPin.style.top = initialCoorY;
-    window.map.mainPin.left = initialCoorX;
+    window.map.mainPin.style.left = initialCoorX;
     var preview = form.querySelector('.ad-form-header__preview img');
     preview.src = 'img/muffin-grey.svg';
     var home = form.querySelector('.ad-form__photo img');
     home.src = 'img/map.jpg';
   };
 
-
-  var clearPins = function () {
-    for (var e = 1; e < window.map.mapPin.length; e++) {
-      window.map.mapPin[e].classList.add('hidden');
-    }
-  };
+  // var clearPins = function() {
+  //   var adCards = window.map.mapPins.querySelectorAll('.map__card');
+  //   window.map.mapPin = window.map.mapPins.querySelectorAll('.map__pin');
+  //   console.log(mapPin);
+  //   for (var e = window.map.mapPin.length - 1; e >= 1; e--) {
+  //     mapPin[e].remove();
+  //   }
+  //   for (var y = adCards.length - 1; y >= 0; y--) {
+  //     adCards[y].remove();
+  //   }
+  // }
 
   var showPins = function () {
     for (var d = 1; d < window.map.mapPin.length; d++) {
@@ -125,8 +131,9 @@
   };
 
   var inactive = function () {
-    clear();
-    clearPins();
+    clearForm();
+    window.map.clearPinCard();
+    window.map.clearFilter();
     addDisable(formInputs);
     window.map.mapFeatures.disabled = true;
     addDisable(mapFilters);
@@ -135,16 +142,24 @@
   };
 
   var activation = function () {
-    window.map.mapPins.appendChild(window.map.fragment);
+    var fragment = document.createDocumentFragment();
+    var fragment2 = document.createDocumentFragment();
+    console.log(window.map.clonarr);
+    // for (var k = 1; k < 5; k++) {//кол-во элемнтов в мешках
+    //   fragment.appendChild(window.map.renderPin(window.map.clonarr[k]));
+    //   fragment2.appendChild(window.card.renderCard(window.map.clonarr[k]));
+    //}
+
+    window.map.mapPins.appendChild(fragment);
     window.map.map.classList.remove('map--faded');
     removeDisable(formInputs);
     showPins();
-    window.map.mapPins.appendChild(window.map.fragment2);
+    window.map.mapPins.appendChild(fragment2);
     window.map.functionalCard();
     form.classList.remove('ad-form--disabled');
 
     removeDisable(mapFilters);
-    window.map.mapFeatures.disabled = false
+    window.map.mapFeatures.disabled = false;
   };
 
   inactive();
@@ -220,7 +235,8 @@
   var clearButton = form.querySelector('.ad-form__reset');
   clearButton.addEventListener('click', function (evt) {
     evt.preventDefault();
-    clear();
+    inactive();
+    //clearForm();
   });
 
   window.form = {

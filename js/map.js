@@ -138,7 +138,7 @@
   var clearPinCard = function() {
     var adCards = mapPins.querySelectorAll('.map__card');
     mapPin = mapPins.querySelectorAll('.map__pin');
-
+    console.log(mapPin);
     for (var e = mapPin.length - 1; e >= 1; e--) {
       mapPin[e].remove();
     }
@@ -194,6 +194,16 @@
     callback(inputFeatures[i]);                    // на каждый чекбокс
   }
 
+  var clearFilter = function() {
+    habitationType.value = 'any';
+    fieldRooms.value = 'any';
+    fieldGuests.value = 'any';
+    fieldPrice.value = 'any';
+    for (var i = 0; i < inputFeatures.length; i++) { //повесили обработчик события
+      inputFeatures[i].checked = false;                    // на каждый чекбокс
+    }
+  }
+
   var renderPin = function (ad) {
     var pin = pinTemplate.cloneNode(true);
     pin.style.left = (ad.location.x - 25) + 'px';
@@ -204,16 +214,16 @@
     return pin;
   };
 
-  var fragment = document.createDocumentFragment();
-  var fragment2 = document.createDocumentFragment();
+  // var fragment = document.createDocumentFragment();
+  // var fragment2 = document.createDocumentFragment();
+  var clonarr = [2, 7, 8];
 
   var successHandler = function (pins) {
     ads = pins;
-    console.log(ads);
-    for (var k = 0; k < 5; k++) {//кол-во элемнтов в мешках
-      fragment.appendChild(renderPin(pins[k]));
-      fragment2.appendChild(window.card.renderCard(pins[k]));
-    }
+    clonarr = pins;
+    console.log(clonarr);
+    //console.log(ads);
+
   };
 
   var errorHandler = function (error) {
@@ -233,13 +243,17 @@
   window.map = {
     map: map,
     mapPins: mapPins,
-    fragment: fragment,
-    fragment2: fragment2,
+    //fragment: fragment,
+    //fragment2: fragment2,
     mainPin: mainPin,
     mapFeatures: mapFeatures,
     mapChildFilters: mapChildFilters,
     mapPin: mapPin,
-    functionalCard: functionalCard
+    renderPin: renderPin,
+    functionalCard: functionalCard,
+    clearFilter: clearFilter,
+    clearPinCard: clearPinCard,
+    clonarr: clonarr,
   };
 
 })();
