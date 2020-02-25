@@ -30,8 +30,10 @@
       label.addEventListener('click', function () {
         for (var i = 1; i < labels.length; i++) {
           adCards[i - 1].hidden = true;
+          labels[i].classList.remove('map__pin--active');
         }
         card.hidden = false;
+        label.classList.add('map__pin--active');
         var adClose = card.querySelector('.popup__close');
         adClose.addEventListener('click', function () {
           card.hidden = true;

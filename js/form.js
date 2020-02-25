@@ -2,6 +2,7 @@
 (function () {
   var mapFilters = window.map.mapChildFilters.querySelectorAll('select');
   var form = document.querySelector('.ad-form');
+  var title = form.querySelector('input[name = title]')
   var formInputs = form.querySelectorAll('fieldset');
   var inputAddress = form.querySelector('input[name = address]');
   var selectRooms = form.querySelector('select[name = rooms]');
@@ -12,18 +13,46 @@
   var pricePerNight = form.querySelector('input[name = price]');
   var submit = form.querySelector('.ad-form__submit');
 
-  submit.addEventListener('click', function () { //вынести price console
-    if (typeHousing.value === 'flat' && Number(pricePerNight.value) <= 1000) {
+  submit.addEventListener('click', function () {
+    if (title.value.length < 30 || title.value.length > 100) {
+      title.style = 'border: 2px solid tomato;';
+    } else {
+      title.style = 'border: none;';
+    }
+  });
+
+  typeHousing.addEventListener('change', function() {
+    if (typeHousing.value === 'bungalo') {
+      pricePerNight.placeholder = '0';
+    } else if (typeHousing.value === 'flat') {
+      pricePerNight.placeholder = '1000';
+    } else if (typeHousing.value === 'house') {
+      pricePerNight.placeholder = '5000';
+    } else if (typeHousing.value === 'palace') {
+      pricePerNight.placeholder = '10000';
+    }
+  });
+
+  submit.addEventListener('click', function () {
+    if (typeHousing.value === 'flat' && Number(pricePerNight.value) < 1000) {
       typeHousing.setCustomValidity(
           'У квартиры минимальная цена за ночь, должно быть не меньше 1000 рублей');
-    } else if (typeHousing.value === 'house' && Number(pricePerNight.value) <= 5000) {
+      typeHousing.style = 'border: 2px solid tomato;';
+      pricePerNight.style = 'border: 2px solid tomato;';
+    } else if (typeHousing.value === 'house' && Number(pricePerNight.value) < 5000) {
       typeHousing.setCustomValidity(
           'У дома минимальная цена за ночь, должно быть не меньше 5000 рублей');
-    } else if (typeHousing.value === 'palace' && Number(pricePerNight.value) <= 10000) {
+      typeHousing.style = 'border: 2px solid tomato;';
+      pricePerNight.style = 'border: 2px solid tomato;';
+    } else if (typeHousing.value === 'palace' && Number(pricePerNight.value) < 10000) {
       typeHousing.setCustomValidity(
           'У дворца минимальная цена за ночь, должно быть не меньше 10 000 рублей');
+      typeHousing.style = 'border: 2px solid tomato;';
+      pricePerNight.style = 'border: 2px solid tomato;';
     } else {
       typeHousing.setCustomValidity('');
+      typeHousing.style = 'border: none;';
+      pricePerNight.style = 'border: none;';
     }
   });
 
@@ -61,17 +90,27 @@
       selectRooms.value === '1' && selectCapacity.value === '3' ||
       selectRooms.value === '1' && selectCapacity.value === '0') {
       selectRooms.setCustomValidity('В одной комнате может поместиться один гость');
+      selectRooms.style = 'border: 2px solid tomato;';
+      selectCapacity.style = 'border: 2px solid tomato;';
     } else if (selectRooms.value === '2' && selectCapacity.value === '3' ||
       selectRooms.value === '2' && selectCapacity.value === '0') {
       selectRooms.setCustomValidity('В двух комнатах могут поместиться не более двух гостей');
+      selectRooms.style = 'border: 2px solid tomato;';
+      selectCapacity.style = 'border: 2px solid tomato;';
     } else if (selectRooms.value === '3' && selectCapacity.value === '0') {
       selectRooms.setCustomValidity('В трёх комнатах могут поместиться не более трёх гостей');
+      selectRooms.style = 'border: 2px solid tomato;';
+      selectCapacity.style = 'border: 2px solid tomato;';
     } else if (selectRooms.value === '100' && selectCapacity.value === '1' ||
       selectRooms.value === '100' && selectCapacity.value === '2' ||
       selectRooms.value === '100' && selectCapacity.value === '3') {
       selectRooms.setCustomValidity('Этот вариант не для гостей');
+      selectRooms.style = 'border: 2px solid tomato;';
+      selectCapacity.style = 'border: 2px solid tomato;';
     } else {
       selectRooms.setCustomValidity('');
+      selectRooms.style = 'border: none;';
+      selectCapacity.style = 'border: none;';
     }
   });
 
