@@ -102,33 +102,34 @@
     }
     typeHousing.selectedIndex = 1;
     form.querySelector('textarea').value = '';
-    inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
+    inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
     // положить главную метку на место после отправки
-    window.map.mainPin.style.top = initialCoorY;
-    window.map.mainPin.style.left = initialCoorX;
+    window.map.mainPin.style.top = INITIAL_Y  + 'px';
+    window.map.mainPin.style.left = INITIAL_X + 'px';
     var preview = form.querySelector('.ad-form-header__preview img');
     preview.src = 'img/muffin-grey.svg';
     var home = form.querySelector('.ad-form__photo img');
     home.src = 'img/map.jpg';
   };
 
-  // var clearPins = function() {
-  //   var adCards = window.map.mapPins.querySelectorAll('.map__card');
-  //   window.map.mapPin = window.map.mapPins.querySelectorAll('.map__pin');
-  //   console.log(mapPin);
-  //   for (var e = window.map.mapPin.length - 1; e >= 1; e--) {
-  //     mapPin[e].remove();
-  //   }
-  //   for (var y = adCards.length - 1; y >= 0; y--) {
-  //     adCards[y].remove();
-  //   }
-  // }
-
-  var showPins = function () {
-    for (var d = 1; d < window.map.mapPin.length; d++) {
-      window.map.mapPin[d].classList.remove('hidden');
+  var mainPinClickHandler = function (evt) {
+    evt.preventDefault();
+    if (evt.which === 1) {
+      activation();
+      getAddress();
     }
-  };
+  }
+
+  var mainPinKeydownHandler = function (evt) {
+    if (evt.keyCode === 13) {
+      activation();
+    }
+  }
+
+  var formSubmitHandler = function (evt) {
+    window.server.upload(new FormData(form), successUpload, unsuccessUpload);
+    evt.preventDefault();
+  }
 
   var inactive = function () {
     clearForm();
@@ -139,97 +140,92 @@
     addDisable(mapFilters);
     window.map.map.classList.add('map--faded');
     form.classList.add('ad-form--disabled');
+
+    window.map.mainPin.addEventListener('mousedown', mainPinClickHandler);
+    window.map.mainPin.addEventListener('keydown', mainPinKeydownHandler);
+
+    form.removeEventListener('submit', formSubmitHandler);
   };
 
   var activation = function () {
     var fragment = document.createDocumentFragment();
     var fragment2 = document.createDocumentFragment();
-    console.log(window.map.clonarr);
-    // for (var k = 1; k < 5; k++) {//кол-во элемнтов в мешках
-    //   fragment.appendChild(window.map.renderPin(window.map.clonarr[k]));
-    //   fragment2.appendChild(window.card.renderCard(window.map.clonarr[k]));
-    //}
+    console.log(window.clonarr);
+    for (var k = 0; k < 5; k++) {//кол-во элемнтов в мешках
+      fragment.appendChild(window.map.renderPin(window.clonarr[k]));
+      fragment2.appendChild(window.card.renderCard(window.clonarr[k]));
+    }
 
     window.map.mapPins.appendChild(fragment);
     window.map.map.classList.remove('map--faded');
     removeDisable(formInputs);
-    showPins();
     window.map.mapPins.appendChild(fragment2);
     window.map.functionalCard();
     form.classList.remove('ad-form--disabled');
 
     removeDisable(mapFilters);
     window.map.mapFeatures.disabled = false;
+
+    window.map.mainPin.removeEventListener('mousedown', mainPinClickHandler);
+    window.map.mainPin.removeEventListener('keydown', mainPinKeydownHandler);
+
+    form.addEventListener('submit', formSubmitHandler);
   };
 
   inactive();
 
-  var INITIAL_SIZE_PIN = 200;
   var SIZE_PIN = 65;
   var SHARP_END_Y = 22;
   var INITIAL_X = parseInt(window.map.mainPin.style.left, 10);
   var INITIAL_Y = parseInt(window.map.mainPin.style.top, 10);
-  var initialCoorX = INITIAL_X + INITIAL_SIZE_PIN / 2;
-  var initialCoorY = INITIAL_Y + INITIAL_SIZE_PIN / 2;
+  console.log(INITIAL_Y);
+  console.log(INITIAL_X);
+  var initialCoorX = INITIAL_X + SIZE_PIN / 2;
+  var initialCoorY = INITIAL_Y + SIZE_PIN / 2;
   var coorY = initialCoorY + SIZE_PIN / 2 + SHARP_END_Y;
 
   var getAddress = function () {
-    inputAddress.value = initialCoorX + 'px ' + coorY + 'px';
+    inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
   };
 
-  window.map.mainPin.addEventListener('mousedown', function (evt) {
-    if (evt.which === 1) {
-      activation();
-      getAddress();
-    }
-  });
-  window.map.mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 13) {
-      activation();
-    }
-  });
 
-
-  inputAddress.value = initialCoorX + 'px ' + initialCoorY + 'px';
+  inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
 
   var successUpload = function () {
-    inactive();
+
     var successTemplate = document.querySelector('#success').
       content.querySelector('.success');
     var success = successTemplate.cloneNode(true);
     document.querySelector('main').insertAdjacentElement('afterbegin', success);
     document.addEventListener('click', function (buttonEvt) {
       buttonEvt.preventDefault();
-      success.style = 'display: none;';
+      success.remove();
     });
     document.addEventListener('keydown', function (newEvt) {
       newEvt.preventDefault();
       if (newEvt.keyCode === 27) {
-        success.style = 'display: none;';
+        success.remove();
       }
     });
+    inactive();
   };
 
   var unsuccessUpload = function () {
+    inactive();
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var error = errorTemplate.cloneNode(true);
     document.querySelector('main').insertAdjacentElement('beforeend', error);
     document.addEventListener('click', function (errorEvt) {
       errorEvt.preventDefault();
-      error.style = 'display: none;';
+      error.remove();
     });
     document.addEventListener('keydown', function (errEvt) {
       errEvt.preventDefault();
       if (errEvt.keyCode === 27) {
-        errEvt.style = 'display: none;';
+        errEvt.remove();
       }
     });
   };
-
-  form.addEventListener('submit', function (evt) {
-    window.server.upload(new FormData(form), successUpload, unsuccessUpload);
-    evt.preventDefault();
-  });
 
 
   var clearButton = form.querySelector('.ad-form__reset');

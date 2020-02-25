@@ -50,10 +50,10 @@
       } else {
         window.map.mainPin.style.left = (window.map.mainPin.offsetLeft - shift.x) + 'px';
       }
-      window.form.inputAddress.value = (window.map.mainPin.offsetLeft -
-        shift.x + window.form.SIZE_PIN / 2) + 'px ' +
-      (window.map.mainPin.offsetTop - shift.y +
-        window.form.SIZE_PIN / 2 + window.form.SHARP_END_Y) + 'px';
+      window.form.inputAddress.value = parseInt((window.map.mainPin.offsetLeft -
+        shift.x + window.form.SIZE_PIN / 2), 10) + 'px ' +
+      parseInt((window.map.mainPin.offsetTop - shift.y +
+        window.form.SIZE_PIN / 2 + window.form.SHARP_END_Y), 10) + 'px';
     };
 
     var onMouseUp = function (upEvt) {

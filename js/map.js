@@ -138,7 +138,6 @@
   var clearPinCard = function() {
     var adCards = mapPins.querySelectorAll('.map__card');
     mapPin = mapPins.querySelectorAll('.map__pin');
-    console.log(mapPin);
     for (var e = mapPin.length - 1; e >= 1; e--) {
       mapPin[e].remove();
     }
@@ -214,16 +213,14 @@
     return pin;
   };
 
-  // var fragment = document.createDocumentFragment();
-  // var fragment2 = document.createDocumentFragment();
   var clonarr = [2, 7, 8];
 
   var successHandler = function (pins) {
     ads = pins;
     clonarr = pins;
     console.log(clonarr);
-    //console.log(ads);
-
+    window.clonarr = clonarr;
+    console.log(window.clonarr);
   };
 
   var errorHandler = function (error) {
@@ -243,8 +240,6 @@
   window.map = {
     map: map,
     mapPins: mapPins,
-    //fragment: fragment,
-    //fragment2: fragment2,
     mainPin: mainPin,
     mapFeatures: mapFeatures,
     mapChildFilters: mapChildFilters,
@@ -253,7 +248,7 @@
     functionalCard: functionalCard,
     clearFilter: clearFilter,
     clearPinCard: clearPinCard,
-    clonarr: clonarr,
+
   };
 
 })();
