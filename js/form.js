@@ -12,7 +12,7 @@
   var pricePerNight = form.querySelector('input[name = price]');
   var submit = form.querySelector('.ad-form__submit');
 
-  typeHousing.addEventListener('click', function () {
+  submit.addEventListener('click', function () { //вынести price console
     if (typeHousing.value === 'flat' && Number(pricePerNight.value) <= 1000) {
       typeHousing.setCustomValidity(
           'У квартиры минимальная цена за ночь, должно быть не меньше 1000 рублей');
@@ -145,14 +145,16 @@
     window.map.mainPin.addEventListener('keydown', mainPinKeydownHandler);
 
     form.removeEventListener('submit', formSubmitHandler);
+
   };
 
   var activation = function () {
     var fragment = document.createDocumentFragment();
     var fragment2 = document.createDocumentFragment();
-    console.log(window.clonarr);
+    //console.log(window.clonarr);
     for (var k = 0; k < 5; k++) {//кол-во элемнтов в мешках
       fragment.appendChild(window.map.renderPin(window.clonarr[k]));
+      //console(window.clonarr[k]);
       fragment2.appendChild(window.card.renderCard(window.clonarr[k]));
     }
 
@@ -178,8 +180,6 @@
   var SHARP_END_Y = 22;
   var INITIAL_X = parseInt(window.map.mainPin.style.left, 10);
   var INITIAL_Y = parseInt(window.map.mainPin.style.top, 10);
-  console.log(INITIAL_Y);
-  console.log(INITIAL_X);
   var initialCoorX = INITIAL_X + SIZE_PIN / 2;
   var initialCoorY = INITIAL_Y + SIZE_PIN / 2;
   var coorY = initialCoorY + SIZE_PIN / 2 + SHARP_END_Y;
@@ -191,18 +191,16 @@
 
   inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
 
-  var successUpload = function () {
 
+  var successUpload = function () {
     var successTemplate = document.querySelector('#success').
       content.querySelector('.success');
     var success = successTemplate.cloneNode(true);
     document.querySelector('main').insertAdjacentElement('afterbegin', success);
-    document.addEventListener('click', function (buttonEvt) {
-      buttonEvt.preventDefault();
+    document.addEventListener('click', function() {
       success.remove();
-    });
+    })
     document.addEventListener('keydown', function (newEvt) {
-      newEvt.preventDefault();
       if (newEvt.keyCode === 27) {
         success.remove();
       }

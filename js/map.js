@@ -15,9 +15,13 @@
   var fieldRooms = mapChildFilters.querySelector('select[name = housing-rooms]');
   var fieldGuests = mapChildFilters.querySelector('select[name = housing-guests]');
 
+  var findSelector = function (where, what) {
+    return where.querySelectorAll(what);
+  }
+
   var functionalCard = function () {
-    var adCards = mapPins.querySelectorAll('.map__card');
-    var labels = mapPins.querySelectorAll('.map__pin');
+    var adCards = findSelector(mapPins, '.map__card');
+    var labels = findSelector(mapPins, '.map__pin');
     // скрываем карточки объявлений
     for (var u = 0; u < adCards.length; u++) {
       adCards[u].hidden = true;
@@ -44,7 +48,7 @@
     }
   };
 
-  var ads = [];
+  var ads;
   var habitation = 'any';
   var filterPrice = 'any';
   var filterRooms = 'any';
@@ -52,14 +56,15 @@
   var filterCheckbox = [];
   var mass = [];
 
-  var filterArray = function () {
+  var filterArray = function (arr) {
+    console.log(arr);
     var sameHabitation;
     if (habitation !== 'any') {
-      sameHabitation = ads.filter(function (item) {
+      sameHabitation = arr.filter(function (item) {
       return item.offer.type === habitation;
     });
     } else {
-      sameHabitation = ads;
+      sameHabitation = [...arr];
     }
     var sameRooms;
     if (filterRooms !== 'any') {
@@ -94,7 +99,7 @@
       samePrice = sameGuests;
     }
 
-    console.log(filterCheckbox);// труфoлсная форма features
+    //console.log(filterCheckbox);// труфoлсная форма features
     for (var i = 0; i < filterCheckbox.length; i++) {
       if (filterCheckbox[i] === true) {
         mass.push(inputFeatures[i].value);//mass - словесная форма features
@@ -118,7 +123,7 @@
       future = samePrice;
     }
 
-    console.log(future);
+    //console.log(future);
     if (future.length > 5) {
       future.length = 5;
     }
@@ -133,11 +138,9 @@
     functionalCard();
   }
 
-  var mapPin = mapPins.querySelectorAll('.map__pin');
-
   var clearPinCard = function() {
-    var adCards = mapPins.querySelectorAll('.map__card');
-    mapPin = mapPins.querySelectorAll('.map__pin');
+    var adCards = findSelector(mapPins, '.map__card');
+    var mapPin = findSelector(mapPins, '.map__pin');
     for (var e = mapPin.length - 1; e >= 1; e--) {
       mapPin[e].remove();
     }
@@ -150,7 +153,7 @@
     clearPinCard();
     habitation = habitationType.value;
     window.setTimeout(function () {
-      filterArray();
+      filterArray(ads);
     }, 500);
   });
   fieldRooms.addEventListener('change', function () {
@@ -158,21 +161,21 @@
     filterRooms = fieldRooms.value;
     console.log(filterRooms);
     window.setTimeout(function () {
-      filterArray();
+      filterArray(ads);
     }, 500);
   });
   fieldGuests.addEventListener('change', function () {
     clearPinCard();
     filterGuests = fieldGuests.value;
     window.setTimeout(function () {
-      filterArray();
+      filterArray(ads);
     }, 500);
   });
   fieldPrice.addEventListener('change', function () {
     clearPinCard();
     filterPrice = fieldPrice.value;
     window.setTimeout(function () {
-      filterArray();
+      filterArray(ads);
     }, 500);
   });
   var callback = function (element) {
@@ -185,7 +188,7 @@
       }
       console.log(filterCheckbox);
       window.setTimeout(function () {
-      filterArray();
+      filterArray(ads);
     }, 500);
     });
   }
@@ -213,14 +216,14 @@
     return pin;
   };
 
-  var clonarr = [2, 7, 8];
+  var clonarr;
 
   var successHandler = function (pins) {
-    ads = pins;
-    clonarr = pins;
-    console.log(clonarr);
+    ads = [...pins]; //клонировать
+    clonarr = pins.slice(); //-ой способ клонирования массивов
+    console.log(ads);
     window.clonarr = clonarr;
-    console.log(window.clonarr);
+    //console.log(window.clonarr);
   };
 
   var errorHandler = function (error) {
@@ -243,12 +246,10 @@
     mainPin: mainPin,
     mapFeatures: mapFeatures,
     mapChildFilters: mapChildFilters,
-    mapPin: mapPin,
     renderPin: renderPin,
     functionalCard: functionalCard,
     clearFilter: clearFilter,
     clearPinCard: clearPinCard,
-
   };
 
 })();
