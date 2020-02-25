@@ -20,7 +20,6 @@
     }
     return type;
   };
-
   var renderCard = function (ad) {
     var card = cardTemplate.cloneNode(true);
     card.querySelector('.popup__title').textContent = ad.offer.title;
@@ -31,28 +30,25 @@
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ' выезд до ' + ad.offer.checkout;
 
     var cardFeaturesList = card.querySelector('.popup__features');
-    cardFeaturesList.querySelector('.popup__feature--wifi').textContent = ad.offer.features[0];
+    for (var i = 0; i < window.data.features.length; i++) {
+      if (ad.offer.features.includes(window.data.features[i])) {
+      cardFeaturesList.querySelector('.popup__feature--' + window.data.features[i]).style = 'background-color: tomato;';
+      }
+    }
 
-    if (ad.offer.features[1]) {
-      cardFeaturesList.querySelector('.popup__feature--dishwasher').textContent = ad.offer.features[1];
+    if (ad.offer.description !== '') {
+      card.querySelector('.popup__description').textContent = ad.offer.description;
+    } else {
+      card.querySelector('.popup__description').remove();
     }
-    if (ad.offer.features[2]) {
-      cardFeaturesList.querySelector('.popup__feature--parking').textContent = ad.offer.features[2];
-    }
-    if (ad.offer.features[3]) {
-      cardFeaturesList.querySelector('.popup__feature--washer').textContent = ad.offer.features[3];
-    }
-    if (ad.offer.features[4]) {
-      cardFeaturesList.querySelector('.popup__feature--elevator').textContent = ad.offer.features[4];
-    }
-    if (ad.offer.features[5]) {
-      cardFeaturesList.querySelector('.popup__feature--conditioner').textContent = ad.offer.features[5];
-    }
-    card.querySelector('.popup__description').textContent = ad.offer.description;
 
 
     var photosContainer = card.querySelector('.popup__photos');
-    photosContainer.querySelector('.popup__photo').src = ad.offer.photos[0];
+    if (ad.offer.photos[0]) {
+      photosContainer.querySelector('.popup__photo').src = ad.offer.photos[0];
+    } else {
+      photosContainer.querySelector('.popup__photo').remove();
+    }
     if (ad.offer.photos[1]) {
       photosContainer.insertAdjacentHTML('beforeend', '<img class="popup__photo-second" width="45" height="40">');
       photosContainer.querySelector('.popup__photo-second').src = ad.offer.photos[1];
@@ -62,7 +58,11 @@
       photosContainer.querySelector('.popup__photo-third').src = ad.offer.photos[2];
     }
 
-    card.querySelector('.popup__avatar').src = ad.author.avatar;
+    if (ad.author.avatar) {
+      card.querySelector('.popup__avatar').src = ad.author.avatar;
+    } else {
+      card.querySelector('.popup__avatar').src = '../img/muffin-grey.svg'
+    }
     return card;
   };
 
