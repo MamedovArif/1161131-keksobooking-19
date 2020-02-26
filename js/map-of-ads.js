@@ -21,7 +21,7 @@
 
   var mapChildFilters = map.querySelector('.map__filters-container');
 
-  var mapFeatures = mapChildFilters.querySelector('.map__features')
+  var mapFeatures = mapChildFilters.querySelector('.map__features');
   var inputFeatures = mapFeatures.querySelectorAll('input[name = features]');
   var habitationType = mapChildFilters.querySelector('select[name = housing-type]');
   var fieldPrice = mapChildFilters.querySelector('select[name = housing-price]');
@@ -29,10 +29,9 @@
   var fieldGuests = mapChildFilters.querySelector('select[name = housing-guests]');
 
 
-
   var findSelector = function (where, what) {
     return where.querySelectorAll(what);
-  }
+  };
 
   var functionalCard = function () {
     var adCards = findSelector(mapPins, '.map__card');
@@ -74,12 +73,11 @@
   var wordFeatures = [];
 
   var filterArray = function (arr) {
-    console.log(arr);
     var sameHabitation;
     if (habitation !== 'any') {
       sameHabitation = arr.filter(function (item) {
-      return item.offer.type === habitation;
-    });
+        return item.offer.type === habitation;
+      });
     } else {
       sameHabitation = arr.slice();
     }
@@ -104,7 +102,7 @@
       samePrice = sameGuests.filter(function (elem) {
         return elem.offer.price < LOWER_LIMIT_MIDDLE_PRICE_PER_HOUSING;
       });
-    } else  if (filterPrice === 'middle') {
+    } else if (filterPrice === 'middle') {
       samePrice = sameGuests.filter(function (elem) {
         return elem.offer.price < LOWER_LIMIT_HIGH_PRICE_PER_HOUSING && elem.offer.price >=
         LOWER_LIMIT_MIDDLE_PRICE_PER_HOUSING;
@@ -119,10 +117,10 @@
 
     for (var i = 0; i < booleanFeatures.length; i++) {
       if (booleanFeatures[i] === true) {
-        wordFeatures.push(inputFeatures[i].value);//wordFeatures - словесная форма features
+        wordFeatures.push(inputFeatures[i].value);
       }
     }
-    var ultimateArrayAds = [];  // конечный массив
+    var ultimateArrayAds = [];
     if (wordFeatures.length !== 0) {
       // нахождение пересечений
       for (var n = 0; n < samePrice.length; n++) {
@@ -149,9 +147,9 @@
     mapPins.appendChild(fragmentPin);
     mapPins.appendChild(fragmentCard);
     functionalCard();
-  }
+  };
 
-  var clearPinCard = function() {
+  var clearPinCard = function () {
     var adCards = findSelector(mapPins, '.map__card');
     var mapPin = findSelector(mapPins, '.map__pin');
     for (var e = mapPin.length - 1; e >= 1; e--) {
@@ -160,7 +158,7 @@
     for (var y = adCards.length - 1; y >= 0; y--) {
       adCards[y].remove();
     }
-  }
+  };
 
   habitationType.addEventListener('change', function () {
     clearPinCard();
@@ -172,7 +170,6 @@
   fieldRooms.addEventListener('change', function () {
     clearPinCard();
     filterRooms = fieldRooms.value;
-    console.log(filterRooms);
     window.setTimeout(function () {
       filterArray(externalArrayAds);
     }, DELAY_TIMEOUT);
@@ -200,23 +197,23 @@
         booleanFeatures.push(inputFeatures[j].checked);
       }
       window.setTimeout(function () {
-      filterArray(externalArrayAds);
-    }, DELAY_TIMEOUT);
+        filterArray(externalArrayAds);
+      }, DELAY_TIMEOUT);
     });
-  }
-  for (var i = 0; i < inputFeatures.length; i++) { //повесили обработчик события
-    callback(inputFeatures[i]);                    // на каждый чекбокс
+  };
+  for (var i = 0; i < inputFeatures.length; i++) {
+    callback(inputFeatures[i]);
   }
 
-  var clearFilter = function() {
+  var clearFilter = function () {
     habitationType.value = 'any';
     fieldRooms.value = 'any';
     fieldGuests.value = 'any';
     fieldPrice.value = 'any';
-    for (var i = 0; i < inputFeatures.length; i++) { //повесили обработчик события
-      inputFeatures[i].checked = false;                    // на каждый чекбокс
+    for (var m = 0; m < inputFeatures.length; m++) {
+      inputFeatures[m].checked = false;
     }
-  }
+  };
 
   var renderPin = function (ad) {
     var pin = pinTemplate.cloneNode(true);
