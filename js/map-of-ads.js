@@ -248,19 +248,18 @@
   window.server.load(successHandler, errorHandler);
 
   window['map-of-ads'] = {
-    map: map,
-    mapPins: mapPins,
-    mainPin: mainPin,
-    mapFeatures: mapFeatures,
-    mapChildFilters: mapChildFilters,
-    renderPin: renderPin,
-    functionalCard: functionalCard,
-    clearFilter: clearFilter,
-    clearPinCard: clearPinCard,
+    'map': map,
+    'mapPins': mapPins,
+    'mainPin': mainPin,
+    'mapFeatures': mapFeatures,
+    'mapChildFilters': mapChildFilters,
+    'renderPin': renderPin,
+    'functionalCard': functionalCard,
+    'clearFilter': clearFilter,
+    'clearPinCard': clearPinCard,
     'ESCAPE_CODE': ESCAPE_CODE,
     'ENTER_CODE': ENTER_CODE,
     'LEFT_BUTTON_MOUSE': LEFT_BUTTON_MOUSE,
     'MAX_QUANTITY_ADS': MAX_QUANTITY_ADS,
   };
-
 })();
