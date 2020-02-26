@@ -21,7 +21,7 @@
 
     var dragged = false;
 
-    var onMouseMove = function (moveEvt) {
+    var mainPinMousemoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
 
@@ -56,23 +56,22 @@
         window['form-sendings'].SIZE_PIN / 2 + window['form-sendings'].SHARP_END_Y), 10) + 'px';
     };
 
-    var onMouseUp = function (upEvt) {
+    var mainPinMouseupHandler = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', mainPinMousemoveHandler);
+      document.removeEventListener('mouseup', mainPinMouseupHandler);
 
       if (dragged) {
-        var onClickPreventDefault = function (clickEvt) {
+        var mainPinClickPreventDefaultHandler = function (clickEvt) {
           clickEvt.preventDefault();
-          window.window['map-of-ads'].mainPin.removeEventListener('click', onClickPreventDefault);
+          window.window['map-of-ads'].mainPin.removeEventListener('click', mainPinClickPreventDefaultHandler);
         };
-        window.window['map-of-ads'].mainPin.addEventListener('click', onClickPreventDefault);
+        window.window['map-of-ads'].mainPin.addEventListener('click', mainPinClickPreventDefaultHandler);
       }
-
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', mainPinMousemoveHandler);
+    document.addEventListener('mouseup', mainPinMouseupHandler);
   });
 })();

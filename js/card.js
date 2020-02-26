@@ -36,7 +36,7 @@
     }
     for (var i = 0; i < window.data.features.length; i++) {
       if (ad.offer.features.includes(window.data.features[i])) {
-      cardFeaturesList.querySelector('.popup__feature--' + window.data.features[i]).style = 'background-color: tomato;';
+        cardFeaturesList.querySelector('.popup__feature--' + window.data.features[i]).style = 'background-color: tomato;';
       }
     }
 
@@ -65,7 +65,7 @@
     if (ad.author.avatar) {
       card.querySelector('.popup__avatar').src = ad.author.avatar;
     } else {
-      card.querySelector('.popup__avatar').src = '../img/muffin-grey.svg'
+      card.querySelector('.popup__avatar').src = '../img/muffin-grey.svg';
     }
     return card;
   };

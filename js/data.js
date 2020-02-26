@@ -1,10 +1,10 @@
 'use strict';
 (function () {
   var NUMBER_OF_ADS = 8;
-  var randomInteger = function(min, max) {
+  var randomInteger = function (min, max) {
     var rand = min - 0.5 + Math.random() * (max - min + 1);
     return Math.round(rand);
-  }
+  };
 
   var titles = ['домик', 'ночлег', 'конура', 'нора', 'гнездо', 'облако', 'токио', 'жилье'];
   var types = ['palace', 'flat', 'house', 'bungalo'];

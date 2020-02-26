@@ -3,6 +3,8 @@
   var MAX_QUANTITY_ADS = 5;
   var ESCAPE_CODE = 27;
   var ENTER_CODE = 13;
+  var LEFT_BUTTON_MOUSE = 1;
+
   var DELAY_TIMEOUT = 500;
 
   var WIDTH_MAP_PIN = 50;
@@ -63,13 +65,13 @@
     }
   };
 
-  var ads;
+  var externalArrayAds;
   var habitation = 'any';
   var filterPrice = 'any';
   var filterRooms = 'any';
   var filterGuests = 'any';
-  var filterCheckbox = [];
-  var mass = [];
+  var booleanFeatures = [];
+  var wordFeatures = [];
 
   var filterArray = function (arr) {
     console.log(arr);
@@ -79,7 +81,7 @@
       return item.offer.type === habitation;
     });
     } else {
-      sameHabitation = [...arr];
+      sameHabitation = arr.slice();
     }
     var sameRooms;
     if (filterRooms !== 'any') {
@@ -115,36 +117,34 @@
       samePrice = sameGuests;
     }
 
-    //console.log(filterCheckbox);// труфoлсная форма features
-    for (var i = 0; i < filterCheckbox.length; i++) {
-      if (filterCheckbox[i] === true) {
-        mass.push(inputFeatures[i].value);//mass - словесная форма features
+    for (var i = 0; i < booleanFeatures.length; i++) {
+      if (booleanFeatures[i] === true) {
+        wordFeatures.push(inputFeatures[i].value);//wordFeatures - словесная форма features
       }
     }
-    var future = [];  // конечный массив
-    if (mass.length !== 0) {
+    var ultimateArrayAds = [];  // конечный массив
+    if (wordFeatures.length !== 0) {
       // нахождение пересечений
-      for (var key of samePrice) {
+      for (var n = 0; n < samePrice.length; n++) {
         var acc = 0;
-        for (var prop of mass) {
-          if (key.offer.features.includes(prop)) {
+        for (var v = 0; v < wordFeatures.length; v++) {
+          if (samePrice[n].offer.features.includes(wordFeatures[v])) {
             acc += 1;
           }
         }
-        if (acc === mass.length) {
-          future.push(key);
+        if (acc === wordFeatures.length) {
+          ultimateArrayAds.push(samePrice[n]);
         }
       }
     } else {
-      future = samePrice;
+      ultimateArrayAds = samePrice;
     }
 
-    //console.log(future);
     var fragmentPin = document.createDocumentFragment();
     var fragmentCard = document.createDocumentFragment();
-    for (var k = 0; k < Math.min(future.length, MAX_QUANTITY_ADS); k++) {
-      fragmentPin.appendChild(renderPin(future[k]));
-      fragmentCard.appendChild(window.card.renderCard(future[k]));
+    for (var k = 0; k < Math.min(ultimateArrayAds.length, MAX_QUANTITY_ADS); k++) {
+      fragmentPin.appendChild(renderPin(ultimateArrayAds[k]));
+      fragmentCard.appendChild(window.card.renderCard(ultimateArrayAds[k]));
     }
     mapPins.appendChild(fragmentPin);
     mapPins.appendChild(fragmentCard);
@@ -166,7 +166,7 @@
     clearPinCard();
     habitation = habitationType.value;
     window.setTimeout(function () {
-      filterArray(ads);
+      filterArray(externalArrayAds);
     }, DELAY_TIMEOUT);
   });
   fieldRooms.addEventListener('change', function () {
@@ -174,34 +174,33 @@
     filterRooms = fieldRooms.value;
     console.log(filterRooms);
     window.setTimeout(function () {
-      filterArray(ads);
+      filterArray(externalArrayAds);
     }, DELAY_TIMEOUT);
   });
   fieldGuests.addEventListener('change', function () {
     clearPinCard();
     filterGuests = fieldGuests.value;
     window.setTimeout(function () {
-      filterArray(ads);
+      filterArray(externalArrayAds);
     }, DELAY_TIMEOUT);
   });
   fieldPrice.addEventListener('change', function () {
     clearPinCard();
     filterPrice = fieldPrice.value;
     window.setTimeout(function () {
-      filterArray(ads);
+      filterArray(externalArrayAds);
     }, DELAY_TIMEOUT);
   });
   var callback = function (element) {
     element.addEventListener('change', function () {
       clearPinCard();
-      filterCheckbox = [];
-      mass = [];
+      booleanFeatures = [];
+      wordFeatures = [];
       for (var j = 0; j < inputFeatures.length; j++) {
-        filterCheckbox.push(inputFeatures[j].checked);
+        booleanFeatures.push(inputFeatures[j].checked);
       }
-      console.log(filterCheckbox);
       window.setTimeout(function () {
-      filterArray(ads);
+      filterArray(externalArrayAds);
     }, DELAY_TIMEOUT);
     });
   }
@@ -229,13 +228,12 @@
     return pin;
   };
 
-  var clonarr;
+  var externalPrimaryAddition;
 
   var successHandler = function (pins) {
-    ads = [...pins]; //клонировать
-    clonarr = pins.slice(); //-ой способ клонирования массивов
-    console.log(ads);
-    window.clonarr = clonarr;
+    externalArrayAds = pins.slice();
+    externalPrimaryAddition = pins.slice();
+    window.externalPrimaryAddition = externalPrimaryAddition;
   };
 
   var errorHandler = function (error) {
@@ -264,6 +262,8 @@
     clearPinCard: clearPinCard,
     'ESCAPE_CODE': ESCAPE_CODE,
     'ENTER_CODE': ENTER_CODE,
+    'LEFT_BUTTON_MOUSE': LEFT_BUTTON_MOUSE,
+    'MAX_QUANTITY_ADS': MAX_QUANTITY_ADS,
   };
 
 })();
