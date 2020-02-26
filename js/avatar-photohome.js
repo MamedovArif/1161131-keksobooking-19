@@ -2,10 +2,9 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-  var chooseFile = window.form.form.
+  var chooseFile = window['form-sendings'].form.
   querySelector('.ad-form__field input[type=file]');
-
-  var avatarUser = window.form.form.
+  var avatarUser = window['form-sendings'].form.
   querySelector('.ad-form-header__preview img');
 
   chooseFile.addEventListener('change', function () {
@@ -27,11 +26,9 @@
     }
   });
 
-
-  var choosePhoto = window.form.form.
+  var choosePhoto = window['form-sendings'].form.
   querySelector('.ad-form__upload input[type=file]');
-
-  var habitationPhoto = window.form.form.
+  var habitationPhoto = window['form-sendings'].form.
   querySelector('.ad-form__photo img');
 
   choosePhoto.addEventListener('change', function () {

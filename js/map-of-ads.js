@@ -1,5 +1,17 @@
 'use strict';
 (function () {
+  var MAX_QUANTITY_ADS = 5;
+  var ESCAPE_CODE = 27;
+  var ENTER_CODE = 13;
+  var DELAY_TIMEOUT = 500;
+
+  var WIDTH_MAP_PIN = 50;
+  var HEIGHT_MAP_PIN = 70;
+
+  var LOWER_LIMIT_MIDDLE_PRICE_PER_HOUSING = 10000;
+  var LOWER_LIMIT_HIGH_PRICE_PER_HOUSING = 50000;
+
+
   var map = document.querySelector('.map');
   var mapPins = map.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -7,13 +19,14 @@
 
   var mapChildFilters = map.querySelector('.map__filters-container');
 
-
   var mapFeatures = mapChildFilters.querySelector('.map__features')
   var inputFeatures = mapFeatures.querySelectorAll('input[name = features]');
   var habitationType = mapChildFilters.querySelector('select[name = housing-type]');
   var fieldPrice = mapChildFilters.querySelector('select[name = housing-price]');
   var fieldRooms = mapChildFilters.querySelector('select[name = housing-rooms]');
   var fieldGuests = mapChildFilters.querySelector('select[name = housing-guests]');
+
+
 
   var findSelector = function (where, what) {
     return where.querySelectorAll(what);
@@ -39,7 +52,7 @@
           card.hidden = true;
         });
         document.addEventListener('keydown', function (evt) {
-          if (evt.keyCode === 27) {
+          if (evt.keyCode === ESCAPE_CODE) {
             card.hidden = true;
           }
         });
@@ -87,15 +100,16 @@
     var samePrice;
     if (filterPrice === 'low') {
       samePrice = sameGuests.filter(function (elem) {
-        return elem.offer.price < 10000;
+        return elem.offer.price < LOWER_LIMIT_MIDDLE_PRICE_PER_HOUSING;
       });
     } else  if (filterPrice === 'middle') {
       samePrice = sameGuests.filter(function (elem) {
-        return elem.offer.price < 50000 && elem.offer.price >= 10000;
+        return elem.offer.price < LOWER_LIMIT_HIGH_PRICE_PER_HOUSING && elem.offer.price >=
+        LOWER_LIMIT_MIDDLE_PRICE_PER_HOUSING;
       });
     } else if (filterPrice === 'high') {
       samePrice = sameGuests.filter(function (elem) {
-        return elem.offer.price >= 50000;
+        return elem.offer.price >= LOWER_LIMIT_HIGH_PRICE_PER_HOUSING;
       });
     } else if (filterPrice === 'any') {
       samePrice = sameGuests;
@@ -126,12 +140,9 @@
     }
 
     //console.log(future);
-    if (future.length > 5) {
-      future.length = 5;
-    }
     var fragmentPin = document.createDocumentFragment();
     var fragmentCard = document.createDocumentFragment();
-    for (var k = 0; k < future.length; k++) {
+    for (var k = 0; k < Math.min(future.length, MAX_QUANTITY_ADS); k++) {
       fragmentPin.appendChild(renderPin(future[k]));
       fragmentCard.appendChild(window.card.renderCard(future[k]));
     }
@@ -156,7 +167,7 @@
     habitation = habitationType.value;
     window.setTimeout(function () {
       filterArray(ads);
-    }, 500);
+    }, DELAY_TIMEOUT);
   });
   fieldRooms.addEventListener('change', function () {
     clearPinCard();
@@ -164,21 +175,21 @@
     console.log(filterRooms);
     window.setTimeout(function () {
       filterArray(ads);
-    }, 500);
+    }, DELAY_TIMEOUT);
   });
   fieldGuests.addEventListener('change', function () {
     clearPinCard();
     filterGuests = fieldGuests.value;
     window.setTimeout(function () {
       filterArray(ads);
-    }, 500);
+    }, DELAY_TIMEOUT);
   });
   fieldPrice.addEventListener('change', function () {
     clearPinCard();
     filterPrice = fieldPrice.value;
     window.setTimeout(function () {
       filterArray(ads);
-    }, 500);
+    }, DELAY_TIMEOUT);
   });
   var callback = function (element) {
     element.addEventListener('change', function () {
@@ -191,7 +202,7 @@
       console.log(filterCheckbox);
       window.setTimeout(function () {
       filterArray(ads);
-    }, 500);
+    }, DELAY_TIMEOUT);
     });
   }
   for (var i = 0; i < inputFeatures.length; i++) { //повесили обработчик события
@@ -210,8 +221,8 @@
 
   var renderPin = function (ad) {
     var pin = pinTemplate.cloneNode(true);
-    pin.style.left = (ad.location.x - 25) + 'px';
-    pin.style.top = (ad.location.y - 70) + 'px';
+    pin.style.left = (ad.location.x - WIDTH_MAP_PIN / 2) + 'px';
+    pin.style.top = (ad.location.y - HEIGHT_MAP_PIN) + 'px';
     pin.querySelector('img').src = ad.author.avatar;
     pin.querySelector('img').alt = ad.offer.title;
 
@@ -225,7 +236,6 @@
     clonarr = pins.slice(); //-ой способ клонирования массивов
     console.log(ads);
     window.clonarr = clonarr;
-    //console.log(window.clonarr);
   };
 
   var errorHandler = function (error) {
@@ -242,7 +252,7 @@
 
   window.server.load(successHandler, errorHandler);
 
-  window.map = {
+  window['map-of-ads'] = {
     map: map,
     mapPins: mapPins,
     mainPin: mainPin,
@@ -252,6 +262,8 @@
     functionalCard: functionalCard,
     clearFilter: clearFilter,
     clearPinCard: clearPinCard,
+    'ESCAPE_CODE': ESCAPE_CODE,
+    'ENTER_CODE': ENTER_CODE,
   };
 
 })();

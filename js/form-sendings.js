@@ -1,6 +1,26 @@
 'use strict';
 (function () {
-  var mapFilters = window.map.mapChildFilters.querySelectorAll('select');
+  var MAX_QUANTITY_SYMBOL_OF_TITLE = 100;
+  var MIN_QUANTITY_SYMBOL_OF_TITLE = 30;
+
+  var INT_MIN_PRICE_PER_FLAT = 1000;
+  var INT_MIN_PRICE_PER_HOUSE = 5000;
+  var INT_MIN_PRICE_PER_PALACE = 10000;
+  var STR_MIN_PRICE_PER_BUNGALO = '0';
+  var STR_MIN_PRICE_PER_FLAT = '1000';
+  var STR_MIN_PRICE_PER_HOUSE = '5000';
+  var STR_MIN_PRICE_PER_PALACE = '10000';
+
+  var SIZE_PIN = 65;
+  var SHARP_END_Y = 22;
+  var INITIAL_X = parseInt(window.window['map-of-ads'].mainPin.style.left, 10);
+  var INITIAL_Y = parseInt(window.window['map-of-ads'].mainPin.style.top, 10);
+  var initialCoorX = INITIAL_X + SIZE_PIN / 2;
+  var initialCoorY = INITIAL_Y + SIZE_PIN / 2;
+  var coorY = initialCoorY + SIZE_PIN / 2 + SHARP_END_Y;
+
+
+  var mapFilters = window.window['map-of-ads'].mapChildFilters.querySelectorAll('select');
   var form = document.querySelector('.ad-form');
   var title = form.querySelector('input[name = title]')
   var formInputs = form.querySelectorAll('fieldset');
@@ -14,7 +34,8 @@
   var submit = form.querySelector('.ad-form__submit');
 
   submit.addEventListener('click', function () {
-    if (title.value.length < 30 || title.value.length > 100) {
+    if (title.value.length < MIN_QUANTITY_SYMBOL_OF_TITLE ||
+      title.value.length > MAX_QUANTITY_SYMBOL_OF_TITLE) {
       title.style = 'border: 2px solid tomato;';
     } else {
       title.style = 'border: none;';
@@ -23,28 +44,28 @@
 
   typeHousing.addEventListener('change', function() {
     if (typeHousing.value === 'bungalo') {
-      pricePerNight.placeholder = '0';
+      pricePerNight.placeholder = STR_MIN_PRICE_PER_BUNGALO;
     } else if (typeHousing.value === 'flat') {
-      pricePerNight.placeholder = '1000';
+      pricePerNight.placeholder = STR_MIN_PRICE_PER_FLAT;
     } else if (typeHousing.value === 'house') {
-      pricePerNight.placeholder = '5000';
+      pricePerNight.placeholder = STR_MIN_PRICE_PER_HOUSE;
     } else if (typeHousing.value === 'palace') {
-      pricePerNight.placeholder = '10000';
+      pricePerNight.placeholder = STR_MIN_PRICE_PER_PALACE;
     }
   });
 
   submit.addEventListener('click', function () {
-    if (typeHousing.value === 'flat' && Number(pricePerNight.value) < 1000) {
+    if (typeHousing.value === 'flat' && Number(pricePerNight.value) < INT_MIN_PRICE_PER_FLAT) {
       typeHousing.setCustomValidity(
           'У квартиры минимальная цена за ночь, должно быть не меньше 1000 рублей');
       typeHousing.style = 'border: 2px solid tomato;';
       pricePerNight.style = 'border: 2px solid tomato;';
-    } else if (typeHousing.value === 'house' && Number(pricePerNight.value) < 5000) {
+    } else if (typeHousing.value === 'house' && Number(pricePerNight.value) < INT_MIN_PRICE_PER_HOUSE) {
       typeHousing.setCustomValidity(
           'У дома минимальная цена за ночь, должно быть не меньше 5000 рублей');
       typeHousing.style = 'border: 2px solid tomato;';
       pricePerNight.style = 'border: 2px solid tomato;';
-    } else if (typeHousing.value === 'palace' && Number(pricePerNight.value) < 10000) {
+    } else if (typeHousing.value === 'palace' && Number(pricePerNight.value) < INT_MIN_PRICE_PER_PALACE) {
       typeHousing.setCustomValidity(
           'У дворца минимальная цена за ночь, должно быть не меньше 10 000 рублей');
       typeHousing.style = 'border: 2px solid tomato;';
@@ -143,8 +164,8 @@
     form.querySelector('textarea').value = '';
     inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
     // положить главную метку на место после отправки
-    window.map.mainPin.style.top = INITIAL_Y  + 'px';
-    window.map.mainPin.style.left = INITIAL_X + 'px';
+    window.window['map-of-ads'].mainPin.style.top = INITIAL_Y  + 'px';
+    window.window['map-of-ads'].mainPin.style.left = INITIAL_X + 'px';
     var preview = form.querySelector('.ad-form-header__preview img');
     preview.src = 'img/muffin-grey.svg';
     var home = form.querySelector('.ad-form__photo img');
@@ -160,7 +181,7 @@
   }
 
   var mainPinKeydownHandler = function (evt) {
-    if (evt.keyCode === 13) {
+    if (evt.keyCode === window['map-of-ads']['ENTER_CODE']) {
       activation();
     }
   }
@@ -172,64 +193,51 @@
 
   var inactive = function () {
     clearForm();
-    window.map.clearPinCard();
-    window.map.clearFilter();
+    window.window['map-of-ads'].clearPinCard();
+    window.window['map-of-ads'].clearFilter();
     addDisable(formInputs);
-    window.map.mapFeatures.disabled = true;
+    window.window['map-of-ads'].mapFeatures.disabled = true;
     addDisable(mapFilters);
-    window.map.map.classList.add('map--faded');
+    window.window['map-of-ads'].map.classList.add('map--faded');
     form.classList.add('ad-form--disabled');
 
-    window.map.mainPin.addEventListener('mousedown', mainPinClickHandler);
-    window.map.mainPin.addEventListener('keydown', mainPinKeydownHandler);
+    window.window['map-of-ads'].mainPin.addEventListener('mousedown', mainPinClickHandler);
+    window.window['map-of-ads'].mainPin.addEventListener('keydown', mainPinKeydownHandler);
 
     form.removeEventListener('submit', formSubmitHandler);
-
   };
 
   var activation = function () {
     var fragment = document.createDocumentFragment();
     var fragment2 = document.createDocumentFragment();
-    //console.log(window.clonarr);
     for (var k = 0; k < 5; k++) {//кол-во элемнтов в мешках
-      fragment.appendChild(window.map.renderPin(window.clonarr[k]));
-      //console(window.clonarr[k]);
+      fragment.appendChild(window.window['map-of-ads'].renderPin(window.clonarr[k]));
       fragment2.appendChild(window.card.renderCard(window.clonarr[k]));
     }
 
-    window.map.mapPins.appendChild(fragment);
-    window.map.map.classList.remove('map--faded');
+    window.window['map-of-ads'].mapPins.appendChild(fragment);
+    window.window['map-of-ads'].map.classList.remove('map--faded');
     removeDisable(formInputs);
-    window.map.mapPins.appendChild(fragment2);
-    window.map.functionalCard();
+    window.window['map-of-ads'].mapPins.appendChild(fragment2);
+    window.window['map-of-ads'].functionalCard();
     form.classList.remove('ad-form--disabled');
 
     removeDisable(mapFilters);
-    window.map.mapFeatures.disabled = false;
+    window.window['map-of-ads'].mapFeatures.disabled = false;
 
-    window.map.mainPin.removeEventListener('mousedown', mainPinClickHandler);
-    window.map.mainPin.removeEventListener('keydown', mainPinKeydownHandler);
+    window.window['map-of-ads'].mainPin.removeEventListener('mousedown', mainPinClickHandler);
+    window.window['map-of-ads'].mainPin.removeEventListener('keydown', mainPinKeydownHandler);
 
     form.addEventListener('submit', formSubmitHandler);
   };
 
   inactive();
 
-  var SIZE_PIN = 65;
-  var SHARP_END_Y = 22;
-  var INITIAL_X = parseInt(window.map.mainPin.style.left, 10);
-  var INITIAL_Y = parseInt(window.map.mainPin.style.top, 10);
-  var initialCoorX = INITIAL_X + SIZE_PIN / 2;
-  var initialCoorY = INITIAL_Y + SIZE_PIN / 2;
-  var coorY = initialCoorY + SIZE_PIN / 2 + SHARP_END_Y;
-
   var getAddress = function () {
     inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
   };
 
-
   inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
-
 
   var successUpload = function () {
     var successTemplate = document.querySelector('#success').
@@ -240,7 +248,7 @@
       success.remove();
     })
     document.addEventListener('keydown', function (newEvt) {
-      if (newEvt.keyCode === 27) {
+      if (newEvt.keyCode === window['map-of-ads']['ESCAPE_CODE']) {
         success.remove();
       }
     });
@@ -258,21 +266,19 @@
     });
     document.addEventListener('keydown', function (errEvt) {
       errEvt.preventDefault();
-      if (errEvt.keyCode === 27) {
+      if (errEvt.keyCode === window['map-of-ads']['ESCAPE_CODE']) {
         errEvt.remove();
       }
     });
   };
 
-
   var clearButton = form.querySelector('.ad-form__reset');
   clearButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     inactive();
-    //clearForm();
   });
 
-  window.form = {
+  window['form-sendings'] = {
     getAddress: getAddress,
     inputAddress: inputAddress,
     SIZE_PIN: SIZE_PIN,

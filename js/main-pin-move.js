@@ -4,14 +4,14 @@
   var BOTTOM_LIMIT = 630;
 
   var limits = {
-    top: window.map.mapPins.offsetTop + TOP_LIMIT,
-    bottom: window.map.mapPins.offsetTop + BOTTOM_LIMIT,
-    left: window.map.mapPins.offsetLeft - window.map.mainPin.offsetWidth / 2,
-    right: window.map.mapPins.offsetLeft + window.map.mapPins.offsetWidth -
-     window.map.mainPin.offsetWidth / 2,
+    top: window.window['map-of-ads'].mapPins.offsetTop + TOP_LIMIT,
+    bottom: window.window['map-of-ads'].mapPins.offsetTop + BOTTOM_LIMIT,
+    left: window.window['map-of-ads'].mapPins.offsetLeft - window.window['map-of-ads'].mainPin.offsetWidth / 2,
+    right: window.window['map-of-ads'].mapPins.offsetLeft + window.window['map-of-ads'].mapPins.offsetWidth -
+     window.window['map-of-ads'].mainPin.offsetWidth / 2,
   };
 
-  window.map.mainPin.addEventListener('mousedown', function (evt) {
+  window.window['map-of-ads'].mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -35,25 +35,25 @@
         y: moveEvt.clientY
       };
 
-      if ((window.map.mainPin.offsetTop - shift.y) < limits.top) {
-        window.map.mainPin.style.top = limits.top + 'px';
-      } else if ((window.map.mainPin.offsetTop - shift.y) > limits.bottom) {
-        window.map.mainPin.style.top = limits.bottom + 'px';
+      if ((window.window['map-of-ads'].mainPin.offsetTop - shift.y) < limits.top) {
+        window.window['map-of-ads'].mainPin.style.top = limits.top + 'px';
+      } else if ((window.window['map-of-ads'].mainPin.offsetTop - shift.y) > limits.bottom) {
+        window.window['map-of-ads'].mainPin.style.top = limits.bottom + 'px';
       } else {
-        window.map.mainPin.style.top = (window.map.mainPin.offsetTop - shift.y) + 'px';
+        window.window['map-of-ads'].mainPin.style.top = (window.window['map-of-ads'].mainPin.offsetTop - shift.y) + 'px';
       }
 
-      if ((window.map.mainPin.offsetLeft - shift.x) < limits.left) {
-        window.map.mainPin.style.left = limits.left + 'px';
-      } else if ((window.map.mainPin.offsetLeft - shift.x) > limits.right) {
-        window.map.mainPin.style.left = limits.right + 'px';
+      if ((window.window['map-of-ads'].mainPin.offsetLeft - shift.x) < limits.left) {
+        window.window['map-of-ads'].mainPin.style.left = limits.left + 'px';
+      } else if ((window.window['map-of-ads'].mainPin.offsetLeft - shift.x) > limits.right) {
+        window.window['map-of-ads'].mainPin.style.left = limits.right + 'px';
       } else {
-        window.map.mainPin.style.left = (window.map.mainPin.offsetLeft - shift.x) + 'px';
+        window.window['map-of-ads'].mainPin.style.left = (window.window['map-of-ads'].mainPin.offsetLeft - shift.x) + 'px';
       }
-      window.form.inputAddress.value = parseInt((window.map.mainPin.offsetLeft -
-        shift.x + window.form.SIZE_PIN / 2), 10) + 'px ' +
-      parseInt((window.map.mainPin.offsetTop - shift.y +
-        window.form.SIZE_PIN / 2 + window.form.SHARP_END_Y), 10) + 'px';
+      window['form-sendings'].inputAddress.value = parseInt((window.window['map-of-ads'].mainPin.offsetLeft -
+        shift.x + window['form-sendings'].SIZE_PIN / 2), 10) + 'px ' +
+      parseInt((window.window['map-of-ads'].mainPin.offsetTop - shift.y +
+        window['form-sendings'].SIZE_PIN / 2 + window['form-sendings'].SHARP_END_Y), 10) + 'px';
     };
 
     var onMouseUp = function (upEvt) {
@@ -65,9 +65,9 @@
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
-          window.map.mainPin.removeEventListener('click', onClickPreventDefault);
+          window.window['map-of-ads'].mainPin.removeEventListener('click', onClickPreventDefault);
         };
-        window.map.mainPin.addEventListener('click', onClickPreventDefault);
+        window.window['map-of-ads'].mainPin.addEventListener('click', onClickPreventDefault);
       }
 
     };

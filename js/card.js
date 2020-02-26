@@ -20,6 +20,7 @@
     }
     return type;
   };
+
   var renderCard = function (ad) {
     var card = cardTemplate.cloneNode(true);
     card.querySelector('.popup__title').textContent = ad.offer.title;

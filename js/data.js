@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var NUMBER_OF_ADS = 8;
-  function randomInteger(min, max) {
+  var randomInteger = function(min, max) {
     var rand = min - 0.5 + Math.random() * (max - min + 1);
     return Math.round(rand);
   }
