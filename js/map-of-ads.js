@@ -34,7 +34,6 @@
   };
 
   var functionalCard = function () {
-    //var adCards = findSelector(mapPins, '.map__card');
     var labels = findSelector(mapPins, '.map__pin');
 
     var addLabelClickHandler = function (label) {
@@ -46,8 +45,8 @@
           labels[i].classList.remove('map__pin--active');
         }
 
-        var currentCardArray = externalPrimaryAddition.filter(function(item) {
-          return label.querySelector('img').src.includes(item.author.avatar)
+        var currentCardArray = externalPrimaryAddition.filter(function (item) {
+          return label.querySelector('img').src.includes(item.author.avatar);
         });
         var currentArr = currentCardArray[0];
         var currentCard = window.card.renderCard(currentArr);
@@ -62,7 +61,7 @@
             currentCard.remove();
           }
           document.removeEventListener('keydown', currentCardKeydownHandler);
-        }
+        };
         document.addEventListener('keydown', currentCardKeydownHandler);
       });
     };
@@ -146,13 +145,10 @@
     }
 
     var fragmentPin = document.createDocumentFragment();
-    var fragmentCard = document.createDocumentFragment();
     for (var k = 0; k < Math.min(ultimateArrayAds.length, MAX_QUANTITY_ADS); k++) {
       fragmentPin.appendChild(renderPin(ultimateArrayAds[k]));
-      fragmentCard.appendChild(window.card.renderCard(ultimateArrayAds[k]));
     }
     mapPins.appendChild(fragmentPin);
-    mapPins.appendChild(fragmentCard);
     functionalCard();
   };
 
@@ -236,7 +232,6 @@
 
   var successHandler = function (pins) {
     externalArrayAds = pins.slice();
-    console.log(externalArrayAds);
     externalPrimaryAddition = pins.slice();
     window.externalPrimaryAddition = externalPrimaryAddition;
   };
@@ -252,7 +247,6 @@
     node.textContent = error;
     document.body.insertAdjacentElement('afterbegin', node);
   };
-
 
 
   window['map-of-ads'] = {
