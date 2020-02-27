@@ -229,6 +229,7 @@
 
   var successHandler = function (pins) {
     externalArrayAds = pins.slice();
+    console.log(externalArrayAds);
     externalPrimaryAddition = pins.slice();
     window.externalPrimaryAddition = externalPrimaryAddition;
   };
@@ -245,9 +246,11 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.server.load(successHandler, errorHandler);
+
 
   window['map-of-ads'] = {
+    'successHandler': successHandler,
+    'errorHandler': errorHandler,
     'map': map,
     'mapPins': mapPins,
     'mainPin': mainPin,

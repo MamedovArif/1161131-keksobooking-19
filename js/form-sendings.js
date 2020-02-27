@@ -58,18 +58,23 @@
   });
 
   typeHousing.addEventListener('change', function () {
-    if (typeHousing.value === 'bungalo') {
-      pricePerNight.placeholder = STR_MIN_PRICE_PER_BUNGALO;
-      pricePerNight.min = INT_MIN_PRICE_PER_BUNGALO;
-    } else if (typeHousing.value === 'flat') {
-      pricePerNight.placeholder = STR_MIN_PRICE_PER_FLAT;
-      pricePerNight.min = INT_MIN_PRICE_PER_FLAT;
-    } else if (typeHousing.value === 'house') {
-      pricePerNight.placeholder = STR_MIN_PRICE_PER_HOUSE;
-      pricePerNight.min = INT_MIN_PRICE_PER_HOUSE;
-    } else if (typeHousing.value === 'palace') {
-      pricePerNight.placeholder = STR_MIN_PRICE_PER_PALACE;
-      pricePerNight.min = INT_MIN_PRICE_PER_PALACE;
+    switch (typeHousing.value) {
+      case 'bungalo':
+        pricePerNight.placeholder = STR_MIN_PRICE_PER_BUNGALO;
+        pricePerNight.min = INT_MIN_PRICE_PER_BUNGALO;
+        break;
+      case 'flat':
+        pricePerNight.placeholder = STR_MIN_PRICE_PER_FLAT;
+        pricePerNight.min = INT_MIN_PRICE_PER_FLAT;
+        break;
+      case 'house':
+        pricePerNight.placeholder = STR_MIN_PRICE_PER_HOUSE;
+        pricePerNight.min = INT_MIN_PRICE_PER_HOUSE;
+        break;
+      case 'palace':
+        pricePerNight.placeholder = STR_MIN_PRICE_PER_PALACE;
+        pricePerNight.min = INT_MIN_PRICE_PER_PALACE;
+        break;
     }
   });
 
@@ -205,7 +210,7 @@
   };
 
   var formSubmitHandler = function (evt) {
-    window.server.upload(new FormData(form), successUpload, unsuccessUpload);
+    window.server.upload(new FormData(form), successUpload, unSuccessUpload);
     evt.preventDefault();
   };
 
@@ -226,6 +231,7 @@
   };
 
   var activation = function () {
+    window.server.load(window['map-of-ads'].successHandler, window['map-of-ads'].errorHandler);
     var fragment = document.createDocumentFragment();
     var fragment2 = document.createDocumentFragment();
     for (var k = 0; k < window['map-of-ads']['MAX_QUANTITY_ADS']; k++) {
@@ -273,7 +279,7 @@
     inactive();
   };
 
-  var unsuccessUpload = function () {
+  var unSuccessUpload = function () {
     inactive();
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var error = errorTemplate.cloneNode(true);
