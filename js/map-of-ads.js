@@ -233,8 +233,15 @@
   var successHandler = function (pins) {
     externalArrayAds = pins.slice();
     externalPrimaryAddition = pins.slice();
-    window.externalPrimaryAddition = externalPrimaryAddition;
-  };
+    //window.externalPrimaryAddition = externalPrimaryAddition;
+
+    var fragment = document.createDocumentFragment();
+    for (var k = 0; k < MAX_QUANTITY_ADS; k++) {
+      fragment.appendChild(renderPin(externalPrimaryAddition[k]));
+    }
+    mapPins.appendChild(fragment);
+    functionalCard();
+  }
 
   var errorHandler = function (error) {
     var node = document.createElement('div');
@@ -264,6 +271,6 @@
     'ESCAPE_CODE': ESCAPE_CODE,
     'ENTER_CODE': ENTER_CODE,
     'LEFT_BUTTON_MOUSE': LEFT_BUTTON_MOUSE,
-    'MAX_QUANTITY_ADS': MAX_QUANTITY_ADS,
+    //'MAX_QUANTITY_ADS': MAX_QUANTITY_ADS,
   };
 })();

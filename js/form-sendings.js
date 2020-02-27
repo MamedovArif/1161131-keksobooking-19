@@ -233,16 +233,11 @@
 
   var activation = function () {
     window.server.load(window['map-of-ads'].successHandler, window['map-of-ads'].errorHandler);
-    var fragment = document.createDocumentFragment();
-    for (var k = 0; k < window['map-of-ads']['MAX_QUANTITY_ADS']; k++) {
-      fragment.appendChild(window['map-of-ads'].renderPin(window.externalPrimaryAddition[k]));
-    }
 
-    window['map-of-ads'].mapPins.appendChild(fragment);
+
     window['map-of-ads'].map.classList.remove('map--faded');
     removeDisable(formInputs);
 
-    window['map-of-ads'].functionalCard();
     form.classList.remove('ad-form--disabled');
 
     removeDisable(mapFilters);
