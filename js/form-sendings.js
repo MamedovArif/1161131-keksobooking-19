@@ -3,6 +3,7 @@
   var MAX_QUANTITY_SYMBOL_OF_TITLE = 100;
   var MIN_QUANTITY_SYMBOL_OF_TITLE = 30;
 
+  var INT_MIN_PRICE_PER_BUNGALO = 0;
   var INT_MIN_PRICE_PER_FLAT = 1000;
   var INT_MIN_PRICE_PER_HOUSE = 5000;
   var INT_MIN_PRICE_PER_PALACE = 10000;
@@ -45,6 +46,8 @@
   var pricePerNight = form.querySelector('input[name = price]');
   var submit = form.querySelector('.ad-form__submit');
 
+  pricePerNight.placeholder = STR_MIN_PRICE_PER_FLAT;
+
   submit.addEventListener('click', function () {
     if (title.value.length < MIN_QUANTITY_SYMBOL_OF_TITLE ||
       title.value.length > MAX_QUANTITY_SYMBOL_OF_TITLE) {
@@ -57,12 +60,16 @@
   typeHousing.addEventListener('change', function () {
     if (typeHousing.value === 'bungalo') {
       pricePerNight.placeholder = STR_MIN_PRICE_PER_BUNGALO;
+      pricePerNight.min = INT_MIN_PRICE_PER_BUNGALO;
     } else if (typeHousing.value === 'flat') {
       pricePerNight.placeholder = STR_MIN_PRICE_PER_FLAT;
+      pricePerNight.min = INT_MIN_PRICE_PER_FLAT;
     } else if (typeHousing.value === 'house') {
       pricePerNight.placeholder = STR_MIN_PRICE_PER_HOUSE;
+      pricePerNight.min = INT_MIN_PRICE_PER_HOUSE;
     } else if (typeHousing.value === 'palace') {
       pricePerNight.placeholder = STR_MIN_PRICE_PER_PALACE;
+      pricePerNight.min = INT_MIN_PRICE_PER_PALACE;
     }
   });
 
@@ -173,7 +180,7 @@
     }
     typeHousing.selectedIndex = 1;
     form.querySelector('textarea').value = '';
-    inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
+    inputAddress.value = parseInt(initialCoorX, 10) + ' ' + parseInt(coorY, 10);
     // положить главную метку на место после отправки
     window['map-of-ads'].mainPin.style.top = INITIAL_Y + 'px';
     window['map-of-ads'].mainPin.style.left = INITIAL_X + 'px';
@@ -245,10 +252,10 @@
   inactive();
 
   var getAddress = function () {
-    inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
+    inputAddress.value = parseInt(initialCoorX, 10) + ' ' + parseInt(coorY, 10);
   };
 
-  inputAddress.value = parseInt(initialCoorX, 10) + 'px ' + parseInt(coorY, 10) + 'px';
+  inputAddress.value = parseInt(initialCoorX, 10) + ' ' + parseInt(coorY, 10);
 
   var successUpload = function () {
     var successTemplate = document.querySelector('#success').

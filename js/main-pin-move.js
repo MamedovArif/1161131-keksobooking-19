@@ -51,9 +51,9 @@
         window.window['map-of-ads'].mainPin.style.left = (window.window['map-of-ads'].mainPin.offsetLeft - shift.x) + 'px';
       }
       window['form-sendings'].inputAddress.value = parseInt((window.window['map-of-ads'].mainPin.offsetLeft -
-        shift.x + window['form-sendings'].SIZE_PIN / 2), 10) + 'px ' +
+        shift.x + window['form-sendings'].SIZE_PIN / 2), 10) + ' ' +
       parseInt((window.window['map-of-ads'].mainPin.offsetTop - shift.y +
-        window['form-sendings'].SIZE_PIN / 2 + window['form-sendings'].SHARP_END_Y), 10) + 'px';
+        window['form-sendings'].SIZE_PIN / 2 + window['form-sendings'].SHARP_END_Y), 10);
     };
 
     var mainPinMouseupHandler = function (upEvt) {
