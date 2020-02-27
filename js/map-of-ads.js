@@ -34,33 +34,40 @@
   };
 
   var functionalCard = function () {
-    var adCards = findSelector(mapPins, '.map__card');
+    //var adCards = findSelector(mapPins, '.map__card');
     var labels = findSelector(mapPins, '.map__pin');
-    // скрываем карточки объявлений
-    for (var u = 0; u < adCards.length; u++) {
-      adCards[u].hidden = true;
-    }
-    var addLabelClickHandler = function (label, card) {
+
+    var addLabelClickHandler = function (label) {
       label.addEventListener('click', function () {
+        if (mapPins.querySelector('.map__card')) {
+          mapPins.querySelector('.map__card').remove();
+        }
         for (var i = 1; i < labels.length; i++) {
-          adCards[i - 1].hidden = true;
           labels[i].classList.remove('map__pin--active');
         }
-        card.hidden = false;
+
+        var currentCardArray = externalPrimaryAddition.filter(function(item) {
+          return label.querySelector('img').src.includes(item.author.avatar)
+        });
+        var currentArr = currentCardArray[0];
+        var currentCard = window.card.renderCard(currentArr);
+        mapPins.appendChild(currentCard);
         label.classList.add('map__pin--active');
-        var adClose = card.querySelector('.popup__close');
+        var adClose = currentCard.querySelector('.popup__close');
         adClose.addEventListener('click', function () {
-          card.hidden = true;
+          currentCard.remove();
         });
-        document.addEventListener('keydown', function (evt) {
+        var currentCardKeydownHandler = function (evt) {
           if (evt.keyCode === ESCAPE_CODE) {
-            card.hidden = true;
+            currentCard.remove();
           }
-        });
+          document.removeEventListener('keydown', currentCardKeydownHandler);
+        }
+        document.addEventListener('keydown', currentCardKeydownHandler);
       });
     };
     for (var r = 1; r < labels.length; r++) {
-      addLabelClickHandler(labels[r], adCards[r - 1]);
+      addLabelClickHandler(labels[r]);
     }
   };
 

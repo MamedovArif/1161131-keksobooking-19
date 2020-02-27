@@ -30,17 +30,17 @@
     card.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ' выезд до ' + ad.offer.checkout;
 
-    var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+    //var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
     var cardFeaturesList = card.querySelector('.popup__features');
     if (ad.offer.features.length === 0) {
       cardFeaturesList.remove();
     }
-    for (var i = 0; i < features.length; i++) {
-      if (ad.offer.features.includes(features[i])) {
-        cardFeaturesList.querySelector('.popup__feature--' + features[i]).style = 'background-color: tomato;';
-      }
-    }
+    // for (var i = 0; i < features.length; i++) {
+    //   if (ad.offer.features.includes(features[i])) {
+    //     cardFeaturesList.querySelector('.popup__feature--' + features[i]).style = 'background-color: lightgreen;';
+    //   }
+    // }
 
     if (ad.offer.description !== '') {
       card.querySelector('.popup__description').textContent = ad.offer.description;

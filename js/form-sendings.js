@@ -47,6 +47,7 @@
   var submit = form.querySelector('.ad-form__submit');
 
   pricePerNight.placeholder = STR_MIN_PRICE_PER_FLAT;
+  pricePerNight.min = INT_MIN_PRICE_PER_FLAT;
 
   submit.addEventListener('click', function () {
     if (title.value.length < MIN_QUANTITY_SYMBOL_OF_TITLE ||
@@ -233,16 +234,14 @@
   var activation = function () {
     window.server.load(window['map-of-ads'].successHandler, window['map-of-ads'].errorHandler);
     var fragment = document.createDocumentFragment();
-    var fragment2 = document.createDocumentFragment();
     for (var k = 0; k < window['map-of-ads']['MAX_QUANTITY_ADS']; k++) {
       fragment.appendChild(window['map-of-ads'].renderPin(window.externalPrimaryAddition[k]));
-      fragment2.appendChild(window.card.renderCard(window.externalPrimaryAddition[k]));
     }
 
     window['map-of-ads'].mapPins.appendChild(fragment);
     window['map-of-ads'].map.classList.remove('map--faded');
     removeDisable(formInputs);
-    window['map-of-ads'].mapPins.appendChild(fragment2);
+
     window['map-of-ads'].functionalCard();
     form.classList.remove('ad-form--disabled');
 
